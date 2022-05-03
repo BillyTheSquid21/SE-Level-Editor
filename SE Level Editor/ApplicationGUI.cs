@@ -40,7 +40,7 @@ namespace Level_Editor
             {
                 string filePath = dialog.FileName;
                 tilesetLabel.Text = "Tileset 1";
-                //TilesetBox.Image = Image.FromFile(filePath);
+                texturePanel1.DisplayTileset(filePath);
                 return;
             }
         }

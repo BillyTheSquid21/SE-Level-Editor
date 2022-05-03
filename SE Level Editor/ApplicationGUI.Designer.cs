@@ -95,9 +95,9 @@ namespace Level_Editor
             // 
             // textureButton
             // 
-            this.textureButton.Location = new System.Drawing.Point(3, 4);
+            this.textureButton.Location = new System.Drawing.Point(6, 5);
             this.textureButton.Name = "textureButton";
-            this.textureButton.Size = new System.Drawing.Size(194, 23);
+            this.textureButton.Size = new System.Drawing.Size(217, 23);
             this.textureButton.TabIndex = 0;
             this.textureButton.Text = "Choose Tileset";
             this.textureButton.UseVisualStyleBackColor = true;
@@ -110,9 +110,9 @@ namespace Level_Editor
             this.panel2.Controls.Add(this.texturePanel1);
             this.panel2.Controls.Add(this.textureButton);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel2.Location = new System.Drawing.Point(1162, 24);
+            this.panel2.Location = new System.Drawing.Point(1158, 24);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(222, 857);
+            this.panel2.Size = new System.Drawing.Size(226, 857);
             this.panel2.TabIndex = 2;
             // 
             // tilesetLabel
@@ -128,9 +128,9 @@ namespace Level_Editor
             // 
             this.texturePanel1.AutoScroll = true;
             this.texturePanel1.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.texturePanel1.Location = new System.Drawing.Point(7, 34);
+            this.texturePanel1.Location = new System.Drawing.Point(6, 34);
             this.texturePanel1.Name = "texturePanel1";
-            this.texturePanel1.Size = new System.Drawing.Size(212, 768);
+            this.texturePanel1.Size = new System.Drawing.Size(217, 768);
             this.texturePanel1.TabIndex = 1;
             // 
             // ApplicationGUI
