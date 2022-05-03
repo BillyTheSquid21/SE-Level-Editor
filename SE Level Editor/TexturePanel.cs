@@ -31,7 +31,9 @@ namespace Level_Editor
     {
         public const string FuncDLL = @"..\..\LoadingFuncs.dll";
         [DllImport(FuncDLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void LoadTileset(string path, [In, Out][MarshalAs(UnmanagedType.LPArray)] byte[] data, int length, ref ImageData dim);
+        public static extern void LoadTileset(string path, [In, Out][MarshalAs(UnmanagedType.LPArray)] byte[] data, int size, ref ImageData dim);
+        [DllImport(FuncDLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void LoadTile([In, Out][MarshalAs(UnmanagedType.LPArray)] byte[] tilesetData, int tilesetSize, ref ImageData dim, [In, Out][MarshalAs(UnmanagedType.LPArray)] byte[] iconData, int iconSize, Tile tile);
 
         public TexturePanel() : base()
         {
@@ -68,49 +70,59 @@ namespace Level_Editor
             uint tilesX = (uint)data.width / TILE_SIZE;
             uint tilesY = (uint)data.height / TILE_SIZE;
             uint currentTileX = 0; uint currentTileY = 0;
+            uint totalTiles = tilesX * tilesY;
 
-            for (int y = 0; y < this.Height; y += 64)
+            //Tracks positioning in panel
+            int x = 0; int y = 0;
+
+            for (int i = 0; i < totalTiles; i ++)
             {
-                for (int x = 0; x < this.Width * 0.8f; x += 64)
+                //Go along all of tiles x, then y, then stop
+                TextureSelect select = new TextureSelect();
+                var panelLoc = this.Location;
+                select.Location = new System.Drawing.Point(panelLoc.X + x, panelLoc.Y + y);
+                select.Name = "textureButton" + x + y;
+                select.Size = new System.Drawing.Size(64, 64);
+                select.TabIndex = 0;
+                select.Text = "" + currentTileX + " " + currentTileY;
+
+                Tile tile = new Tile();
+                tile.x = currentTileX; tile.y = currentTileY;
+                byte[] iconBytes = new byte[(int)(32 * 32 * BITS_PER_PIXEL)];
+                ExtractTileFromImage(ref bytes, bytes.Length, ref data, ref iconBytes, iconBytes.Length, tile);
+                using (var stream = new MemoryStream(iconBytes))
+                using (var bmp = new Bitmap(32, 32, pixelFormat))
                 {
-                    //Go along all of tiles x, then y, then stop
-                    TextureSelect select = new TextureSelect();
-                    var panelLoc = this.Location;
-                    select.Location = new System.Drawing.Point(panelLoc.X + x, panelLoc.Y + y);
-                    select.Name = "textureButton" + x + y;
-                    select.Size = new System.Drawing.Size(64, 64);
-                    select.TabIndex = 0;
-                    select.Text = "" + data.width + " " + data.height;
+                    BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
+                    IntPtr pNative = bmpData.Scan0;
+                    Marshal.Copy(iconBytes, 0, pNative, iconBytes.Length);
+                    bmp.UnlockBits(bmpData);
+                    select.Image = (Bitmap)bmp.Clone();
+                }
 
-                    //Test image
-                    using (var stream = new MemoryStream(bytes))
-                    using (var bmp = new Bitmap(data.width, data.height, pixelFormat))
-                    {
-                        BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, bmp.PixelFormat);
+                select.m_Tile = tile;
+                select.Click += new System.EventHandler(this.Select_Click);
+                this.Controls.Add(select);
 
-                        IntPtr pNative = bmpData.Scan0;
-                        Marshal.Copy(bytes, 0, pNative, bytes.Length);
-
-                        bmp.UnlockBits(bmpData);
-
-                        bmp.Save("test.bmp");
-                    }
-
-                    select.Click += new System.EventHandler(this.Select_Click);
-                    this.Controls.Add(select);
-
-                    //Increment tiles
-                    if (currentTileX >= tilesX)
-                    {
-                        if (currentTileY >= tilesY)
-                        {
-                            return;
-                        }
-                        currentTileY++;
-                        currentTileX = 0;
-                        continue;
-                    }
+                //Increment tiles
+                if (currentTileX >= tilesX - 1)
+                {
+                    currentTileX = 0;
+                    currentTileY++;
+                }
+                else
+                {
                     currentTileX++;
+                }
+
+                //Increment position
+                if (x >= 128)
+                {
+                    x = 0; y+=64;
+                }
+                else
+                {
+                    x += 64;
                 }
             }
         }
@@ -124,6 +136,18 @@ namespace Level_Editor
             }
         }
 
+        public unsafe void ExtractTileFromImage(ref byte[] tilesetData, int tilesetSize, ref ImageData info, ref byte[] iconData, int tileSize, Tile tile)
+        {
+            //Pin Memory
+            fixed (byte* p1 = tilesetData)
+            {
+                fixed(byte* p2 = iconData)
+                {
+                    LoadTile(tilesetData, tilesetSize, ref info, iconData, tileSize, tile);
+                }
+            }
+        }
+
         private void Select_Click(object sender, EventArgs e)
         {
             
@@ -131,8 +155,8 @@ namespace Level_Editor
     }
 
     class TextureSelect : Button
-    { 
-        
+    {
+        public Tile m_Tile;
     }
 
 }
