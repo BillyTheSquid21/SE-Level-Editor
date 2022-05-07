@@ -1,24 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Text;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Drawing.Imaging;
 
 namespace Level_Editor
 {
-    public struct Tile
-    {
-        public uint x;
-        public uint y;
-    }
-
     public struct ImageData
     {
         public int width;
@@ -29,7 +17,7 @@ namespace Level_Editor
     //Panel that displays a grid of availible tiles
     class TexturePanel : Panel
     {
-        public const string FuncDLL = @"..\..\LoadingFuncs.dll";
+        public const string FuncDLL = @"LoadingFuncs.dll";
         [DllImport(FuncDLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void LoadTileset(string path, [In, Out][MarshalAs(UnmanagedType.LPArray)] byte[] data, int size, ref ImageData dim);
         [DllImport(FuncDLL, CallingConvention = CallingConvention.Cdecl)]
@@ -150,7 +138,8 @@ namespace Level_Editor
 
         private void Select_Click(object sender, EventArgs e)
         {
-            
+            TextureSelect select = (TextureSelect)sender;
+            EditorData.s_CurrentTextureTile = select.m_Tile;
         }
     }
 
