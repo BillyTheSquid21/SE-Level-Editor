@@ -54,14 +54,16 @@ namespace Level_Editor
             LoadTilesetFromFile(path, ref bytes, bytes.Length, ref data);
 
             //Works out how many tiles there are
-            const int TILE_SIZE = 32;
-            uint tilesX = (uint)data.width / TILE_SIZE;
-            uint tilesY = (uint)data.height / TILE_SIZE;
+            uint tilesX = (uint)data.width / Constants.TILE_SIZE;
+            uint tilesY = (uint)data.height / Constants.TILE_SIZE;
             uint currentTileX = 0; uint currentTileY = 0;
             uint totalTiles = tilesX * tilesY;
 
             //Tracks positioning in panel
             int x = 0; int y = 0;
+
+            //Image array
+            Image[,] tileImages = new Image[tilesX, tilesY];
 
             for (int i = 0; i < totalTiles; i ++)
             {
@@ -74,18 +76,24 @@ namespace Level_Editor
                 select.TabIndex = 0;
                 select.Text = "" + currentTileX + " " + currentTileY;
 
+                const int DISPLAY_TILE_SIZE = 32;
                 Tile tile = new Tile();
                 tile.x = currentTileX; tile.y = currentTileY;
-                byte[] iconBytes = new byte[(int)(32 * 32 * BITS_PER_PIXEL)];
+                byte[] iconBytes = new byte[(int)(DISPLAY_TILE_SIZE * DISPLAY_TILE_SIZE * BITS_PER_PIXEL)];
                 ExtractTileFromImage(ref bytes, bytes.Length, ref data, ref iconBytes, iconBytes.Length, tile);
                 using (var stream = new MemoryStream(iconBytes))
-                using (var bmp = new Bitmap(32, 32, pixelFormat))
+                using (var bmp = new Bitmap(DISPLAY_TILE_SIZE, DISPLAY_TILE_SIZE, pixelFormat))
                 {
                     BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
                     IntPtr pNative = bmpData.Scan0;
                     Marshal.Copy(iconBytes, 0, pNative, iconBytes.Length);
                     bmp.UnlockBits(bmpData);
                     select.Image = (Bitmap)bmp.Clone();
+                    tileImages[currentTileX, currentTileY] = (Image)bmp.Clone();
+                }
+                if (i == 0)
+                {
+                    EditorData.brushTextureImage = (Image)select.Image.Clone();
                 }
 
                 select.m_Tile = tile;
@@ -113,6 +121,7 @@ namespace Level_Editor
                     x += 64;
                 }
             }
+            EditorData.currentTilesetImages = tileImages;
         }
 
         public unsafe void LoadTilesetFromFile(string path, ref byte[] data, int size, ref ImageData info)
@@ -139,7 +148,8 @@ namespace Level_Editor
         private void Select_Click(object sender, EventArgs e)
         {
             TextureSelect select = (TextureSelect)sender;
-            EditorData.s_CurrentTextureTile = select.m_Tile;
+            EditorData.brushTextureTile = select.m_Tile;
+            EditorData.brushTextureImage = select.Image;
         }
     }
 

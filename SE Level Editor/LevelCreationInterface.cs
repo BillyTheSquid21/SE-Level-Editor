@@ -22,7 +22,8 @@ namespace Level_Editor
         private Label label6;
         private Button button1;
         private Label label2;
-
+        private NumericUpDown numericUpDown6;
+        private Label label7;
         private string levelsPath = "";
 
         public CreateLevelForm(string path) : base()
@@ -45,11 +46,14 @@ namespace Level_Editor
             this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -117,6 +121,11 @@ namespace Level_Editor
             0,
             0});
             this.numericUpDown4.Location = new System.Drawing.Point(13, 111);
+            this.numericUpDown4.Maximum = new decimal(new int[] {
+            -294967296,
+            0,
+            0,
+            0});
             this.numericUpDown4.Minimum = new decimal(new int[] {
             -294967296,
             0,
@@ -143,6 +152,11 @@ namespace Level_Editor
             0,
             0});
             this.numericUpDown5.Location = new System.Drawing.Point(13, 138);
+            this.numericUpDown5.Maximum = new decimal(new int[] {
+            -294967296,
+            0,
+            0,
+            0});
             this.numericUpDown5.Minimum = new decimal(new int[] {
             -294967296,
             0,
@@ -163,7 +177,7 @@ namespace Level_Editor
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(13, 165);
+            this.button1.Location = new System.Drawing.Point(13, 191);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(195, 23);
             this.button1.TabIndex = 11;
@@ -171,9 +185,32 @@ namespace Level_Editor
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // numericUpDown6
+            // 
+            this.numericUpDown6.Location = new System.Drawing.Point(13, 165);
+            this.numericUpDown6.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown6.Name = "numericUpDown6";
+            this.numericUpDown6.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown6.TabIndex = 12;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(140, 168);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(74, 13);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "Terrain Height";
+            // 
             // CreateLevelForm
             // 
-            this.ClientSize = new System.Drawing.Size(220, 198);
+            this.ClientSize = new System.Drawing.Size(220, 219);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.numericUpDown6);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.numericUpDown5);
@@ -193,6 +230,7 @@ namespace Level_Editor
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -208,7 +246,7 @@ namespace Level_Editor
 
             //If valid
             LevelEditorCommands.CreateLevel((uint)numericUpDown2.Value, (uint)numericUpDown3.Value, (uint)numericUpDown1.Value,
-                (int)numericUpDown4.Value, (int)numericUpDown5.Value, this.levelsPath);
+                (int)numericUpDown4.Value, (int)numericUpDown5.Value, (int)numericUpDown6.Value, this.levelsPath);
             this.Close();
         }
 
@@ -361,7 +399,8 @@ namespace Level_Editor
                     bool delete = LevelEditorCommands.ConfirmMessage("Delete selected folder?");
                     if (delete)
                     {
-                        Directory.Delete(currentPath, true);
+                        //TODO - get deleting working
+                        //Directory.Delete(currentPath, true);
                     }
                     break;
                 default:

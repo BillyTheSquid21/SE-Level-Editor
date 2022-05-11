@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using System.IO;
 
 namespace Level_Editor
 {
+    //Interface through which many editor commands can carry out - allows ease of adding features later
     static class LevelEditorCommands
     {
         public static void GenerateProject(string name, string rootDir)
@@ -69,10 +62,15 @@ namespace Level_Editor
             prompt.ShowDialog();
         }
 
-        public static void CreateLevel(uint width, uint height, uint id, int originX, int originZ, string path)
+        public static void CreateLevel(uint width, uint height, uint id, int originX, int originZ, int terrainHeight,string path)
         {
-            LevelSerialize.CreateLevel(width, height, id, originX, originZ, path);
+            LevelSerialize.CreateLevel(width, height, id, originX, originZ, terrainHeight, path);
             LevelSerialize.CreateObjectFile(id, path);
+        }
+
+        public static void WriteLevel()
+        {
+            LevelSerialize.WriteCurrentLevelData();
         }
     }
 }

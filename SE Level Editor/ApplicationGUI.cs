@@ -31,7 +31,7 @@ namespace Level_Editor
             }
         }
 
-        private void RepopulateTreeView(string path)
+        public void RepopulateTreeView(string path)
         {
             TreeNode rootNode;
 
@@ -132,7 +132,16 @@ namespace Level_Editor
             if (intselectedindex >= 0)
             {
                 //Gets filepath of selected item
-                string filePath = (string)listView1.Items[intselectedindex].Tag;       
+                EditorData.selectedListPath = (string)listView1.Items[intselectedindex].Tag;
+                //TODO - make do more than select level
+                if (EditorData.selectedListPath == null)
+                {
+                    return;
+                }
+                if (EditorData.selectedListPath.Contains(".json") && EditorData.selectedListPath.Contains("level"))
+                {
+                    this.workspace1.LoadLevel(EditorData.selectedListPath);
+                }
             }
         }
 
@@ -187,7 +196,37 @@ namespace Level_Editor
                 }
                 DirectoryInfo info = (DirectoryInfo)treeView1.SelectedNode.Tag;
                 LevelEditorCommands.OpenCreateFileDialog(info.FullName);
+                this.PopulateTreeView();
             }
+        }
+
+        private void writeCurrentLevelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (EditorData.currentLevelPath == null)
+            {
+                return;
+            }
+            LevelEditorCommands.WriteLevel();
+        }
+
+        private void textureToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.workspace1.SetBrushMode(BrushMode.TEXTURE);
+        }
+
+        private void permissionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.workspace1.SetBrushMode(BrushMode.PERMISSION);
+        }
+
+        private void directionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.workspace1.SetBrushMode(BrushMode.DIRECTION);
+        }
+
+        private void heightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.workspace1.SetBrushMode(BrushMode.HEIGHT);
         }
     }
 }

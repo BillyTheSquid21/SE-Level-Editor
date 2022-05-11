@@ -36,6 +36,14 @@ namespace Level_Editor
             this.exitToolstripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fullscreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.levelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.writeCurrentLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setBrushModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.permissionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.directionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.heightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textureButton = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tilesetLabel = new System.Windows.Forms.Label();
@@ -49,6 +57,7 @@ namespace Level_Editor
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.workspace1 = new Level_Editor.Workspace();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -62,7 +71,9 @@ namespace Level_Editor
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.viewToolStripMenuItem});
+            this.viewToolStripMenuItem,
+            this.levelToolStripMenuItem,
+            this.toolsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1384, 24);
@@ -99,6 +110,68 @@ namespace Level_Editor
             this.fullscreenToolStripMenuItem.Text = "Exit fullscreen";
             this.fullscreenToolStripMenuItem.Click += new System.EventHandler(this.fullscreenToolStripMenuItem_Click);
             // 
+            // levelToolStripMenuItem
+            // 
+            this.levelToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.writeCurrentLevelToolStripMenuItem});
+            this.levelToolStripMenuItem.Name = "levelToolStripMenuItem";
+            this.levelToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.levelToolStripMenuItem.Text = "Level";
+            // 
+            // writeCurrentLevelToolStripMenuItem
+            // 
+            this.writeCurrentLevelToolStripMenuItem.Name = "writeCurrentLevelToolStripMenuItem";
+            this.writeCurrentLevelToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.writeCurrentLevelToolStripMenuItem.Text = "Write Current Level";
+            this.writeCurrentLevelToolStripMenuItem.Click += new System.EventHandler(this.writeCurrentLevelToolStripMenuItem_Click);
+            // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.setBrushModeToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // setBrushModeToolStripMenuItem
+            // 
+            this.setBrushModeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.textureToolStripMenuItem,
+            this.permissionToolStripMenuItem,
+            this.directionToolStripMenuItem,
+            this.heightToolStripMenuItem});
+            this.setBrushModeToolStripMenuItem.Name = "setBrushModeToolStripMenuItem";
+            this.setBrushModeToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.setBrushModeToolStripMenuItem.Text = "Set brush mode";
+            // 
+            // textureToolStripMenuItem
+            // 
+            this.textureToolStripMenuItem.Name = "textureToolStripMenuItem";
+            this.textureToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.textureToolStripMenuItem.Text = "Texture";
+            this.textureToolStripMenuItem.Click += new System.EventHandler(this.textureToolStripMenuItem_Click);
+            // 
+            // permissionToolStripMenuItem
+            // 
+            this.permissionToolStripMenuItem.Name = "permissionToolStripMenuItem";
+            this.permissionToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.permissionToolStripMenuItem.Text = "Permission";
+            this.permissionToolStripMenuItem.Click += new System.EventHandler(this.permissionToolStripMenuItem_Click);
+            // 
+            // directionToolStripMenuItem
+            // 
+            this.directionToolStripMenuItem.Name = "directionToolStripMenuItem";
+            this.directionToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.directionToolStripMenuItem.Text = "Direction";
+            this.directionToolStripMenuItem.Click += new System.EventHandler(this.directionToolStripMenuItem_Click);
+            // 
+            // heightToolStripMenuItem
+            // 
+            this.heightToolStripMenuItem.Name = "heightToolStripMenuItem";
+            this.heightToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.heightToolStripMenuItem.Text = "Height";
+            this.heightToolStripMenuItem.Click += new System.EventHandler(this.heightToolStripMenuItem_Click);
+            // 
             // textureButton
             // 
             this.textureButton.Location = new System.Drawing.Point(6, 5);
@@ -112,6 +185,7 @@ namespace Level_Editor
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.tilesetLabel);
             this.panel2.Controls.Add(this.texturePanel1);
             this.panel2.Controls.Add(this.textureButton);
@@ -234,12 +308,24 @@ namespace Level_Editor
             // 
             this.columnHeader2.Text = "Type";
             // 
+            // workspace1
+            // 
+            this.workspace1.AutoScroll = true;
+            this.workspace1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.workspace1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.workspace1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.workspace1.Location = new System.Drawing.Point(326, 24);
+            this.workspace1.Name = "workspace1";
+            this.workspace1.Size = new System.Drawing.Size(822, 664);
+            this.workspace1.TabIndex = 4;
+            // 
             // ApplicationGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(1384, 881);
+            this.Controls.Add(this.workspace1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.menuStrip1);
@@ -282,6 +368,15 @@ namespace Level_Editor
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ToolStripMenuItem levelToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem writeCurrentLevelToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setBrushModeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem textureToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem permissionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem directionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem heightToolStripMenuItem;
+        private Workspace workspace1;
     }
 }
 
