@@ -30,12 +30,15 @@ namespace Level_Editor
                 case BrushMode.HEIGHT:
                     OverlayHeights();
                     break;
+                case BrushMode.PERMISSION:
+                    OverlayPermissions();
+                    break;
                 default:
                     break;
             }
         }
 
-        private void ClearTileOverlays()
+        public void ClearTileOverlays()
         {
             foreach(Control control in this.Controls)
             {
@@ -43,7 +46,7 @@ namespace Level_Editor
             }
         }
 
-        private void OverlayDirections()
+        public void OverlayDirections()
         {
             int index = 0;
             for (int y = 0; y < EditorData.currentLevelHeight; y++)
@@ -61,7 +64,25 @@ namespace Level_Editor
                 }
             }
         }
-        private void OverlayHeights()
+        public void OverlayPermissions()
+        {
+            int index = 0;
+            for (int y = 0; y < EditorData.currentLevelHeight; y++)
+            {
+                for (int x = 0; x < EditorData.currentLevelWidth; x++)
+                {
+                    int permission = EditorData.currentLevelPermissions[EditorData.brushWorldHeight][x, y];
+                    Label label = new Label();
+                    label.AutoSize = true;
+                    label.Text = "" + permission;
+                    label.Parent = this.Controls[index];
+                    label.Location = this.Controls[index].PointToClient(label.PointToScreen(Point.Empty));
+                    this.Controls[index].Controls.Add(label);
+                    index++;
+                }
+            }
+        }
+        public void OverlayHeights()
         {
             int index = 0;
             for (int y = 0; y < EditorData.currentLevelHeight; y++)
@@ -177,6 +198,14 @@ namespace Level_Editor
                         this.ClearTileOverlays();
                         this.OverlayDirections(); //TODO - do more efficiently
                         break;
+                    case BrushMode.PERMISSION:
+                        //Sets height change in editor data
+                        currentTile = (Tile)boxInstance.Tag;
+                        EditorData.currentLevelPermissions[EditorData.brushWorldHeight][currentTile.x, currentTile.y] = EditorData.brushPermission;
+                        //Shows change
+                        this.ClearTileOverlays();
+                        this.OverlayPermissions(); //TODO - do more efficiently
+                        break;
                     default:
                         break;
                 }
@@ -187,8 +216,9 @@ namespace Level_Editor
                 switch (EditorData.brushMode)
                 {
                     case BrushMode.HEIGHT:
-                        NumericSelect numericSelect = new NumericSelect();
+                        HeightSelect numericSelect = new HeightSelect();
                         numericSelect.ShowDialog();
+                        EditorData.brushHeight = numericSelect.GetValue();
                         break;
                     case BrushMode.DIRECTION:
                         DirectionSelect directionSelect = new DirectionSelect();

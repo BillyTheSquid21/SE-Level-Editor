@@ -32,6 +32,8 @@ namespace Level_Editor
         static public Image brushTextureImage = null;
         static public int brushHeight = 0;
         static public int brushDirection = 0;
+        static public int brushWorldHeight = 0;
+        static public int brushPermission = 0;
         static public BrushMode brushMode = BrushMode.TEXTURE;
 
         //System
@@ -49,6 +51,29 @@ namespace Level_Editor
 
         static public int[,] currentLevelHeights = null; static public int[,] currentLevelDirections = null;
         static public IDictionary<int, int[,]> currentLevelPermissions = null; static public Tile[,] currentLevelTextures = null;
+
+        //Add new layer
+        public static void AddHeightLayer(int height)
+        {
+            //If exists, return
+            foreach(int i in currentLevelWorldHeights)
+            {
+                if (i == height)
+                {
+                    LevelEditorCommands.ErrorMessage("Height already has layer attached!");
+                    return;
+                }
+            }
+
+            int[] newWorldHeights = new int[currentLevelWorldHeights.Length + 1];
+            currentLevelWorldHeights.CopyTo(newWorldHeights, 0);
+            //Add at end
+            newWorldHeights[currentLevelWorldHeights.Length] = height;
+            currentLevelWorldHeights = newWorldHeights;
+
+            //Add to 3d data dictionaries
+            currentLevelPermissions[height] = new int[currentLevelWidth,currentLevelHeight];
+        }
     }
 
     

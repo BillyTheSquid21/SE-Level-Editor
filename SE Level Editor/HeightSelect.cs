@@ -12,12 +12,12 @@ using System.Drawing.Imaging;
 
 namespace Level_Editor
 {
-    class NumericSelect : Form
+    class HeightSelect : Form
     {
         private NumericUpDown numericUpDown1;
         private Button button1;
         private Label label1;
-        public NumericSelect() : base()
+        public HeightSelect() : base()
         {
             this.InitializeComponent();
         }
@@ -82,8 +82,12 @@ namespace Level_Editor
 
         private void button1_Click(object sender, EventArgs e)
         {
-            EditorData.brushHeight = (int)this.numericUpDown1.Value;
             this.Close();
+        }
+
+        public int GetValue()
+        {
+            return (int)this.numericUpDown1.Value;
         }
     }
 }

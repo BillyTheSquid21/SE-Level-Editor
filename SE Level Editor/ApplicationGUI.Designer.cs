@@ -47,7 +47,6 @@ namespace Level_Editor
             this.textureButton = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tilesetLabel = new System.Windows.Forms.Label();
-            this.texturePanel1 = new Level_Editor.TexturePanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -57,7 +56,11 @@ namespace Level_Editor
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.label1 = new System.Windows.Forms.Label();
+            this.helpfulInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.heightPanel1 = new Level_Editor.HeightPanel();
             this.workspace1 = new Level_Editor.Workspace();
+            this.texturePanel1 = new Level_Editor.TexturePanel();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -204,18 +207,10 @@ namespace Level_Editor
             this.tilesetLabel.TabIndex = 2;
             this.tilesetLabel.Text = "Tileset Name";
             // 
-            // texturePanel1
-            // 
-            this.texturePanel1.AutoScroll = true;
-            this.texturePanel1.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.texturePanel1.Location = new System.Drawing.Point(6, 34);
-            this.texturePanel1.Name = "texturePanel1";
-            this.texturePanel1.Size = new System.Drawing.Size(227, 768);
-            this.texturePanel1.TabIndex = 1;
-            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.splitContainer1);
@@ -258,8 +253,8 @@ namespace Level_Editor
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.listView1);
-            this.splitContainer1.Size = new System.Drawing.Size(326, 498);
-            this.splitContainer1.SplitterDistance = 190;
+            this.splitContainer1.Size = new System.Drawing.Size(322, 498);
+            this.splitContainer1.SplitterDistance = 187;
             this.splitContainer1.TabIndex = 0;
             // 
             // treeView1
@@ -270,7 +265,7 @@ namespace Level_Editor
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
             this.treeView1.SelectedImageIndex = 0;
-            this.treeView1.Size = new System.Drawing.Size(190, 498);
+            this.treeView1.Size = new System.Drawing.Size(187, 498);
             this.treeView1.TabIndex = 0;
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick_1);
             this.treeView1.Resize += new System.EventHandler(this.treeView1_Resize);
@@ -291,7 +286,7 @@ namespace Level_Editor
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(132, 498);
+            this.listView1.Size = new System.Drawing.Size(131, 498);
             this.listView1.SmallImageList = this.imageList1;
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
@@ -308,6 +303,32 @@ namespace Level_Editor
             // 
             this.columnHeader2.Text = "Type";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label1.Location = new System.Drawing.Point(326, 791);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(109, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Select working height";
+            // 
+            // helpfulInfoToolStripMenuItem
+            // 
+            this.helpfulInfoToolStripMenuItem.Name = "helpfulInfoToolStripMenuItem";
+            this.helpfulInfoToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            this.helpfulInfoToolStripMenuItem.Text = "Helpful Info";
+            // 
+            // heightPanel1
+            // 
+            this.heightPanel1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.heightPanel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.heightPanel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.heightPanel1.Location = new System.Drawing.Point(326, 688);
+            this.heightPanel1.Name = "heightPanel1";
+            this.heightPanel1.Size = new System.Drawing.Size(822, 103);
+            this.heightPanel1.TabIndex = 5;
+            // 
             // workspace1
             // 
             this.workspace1.AutoScroll = true;
@@ -319,12 +340,23 @@ namespace Level_Editor
             this.workspace1.Size = new System.Drawing.Size(822, 664);
             this.workspace1.TabIndex = 4;
             // 
+            // texturePanel1
+            // 
+            this.texturePanel1.AutoScroll = true;
+            this.texturePanel1.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.texturePanel1.Location = new System.Drawing.Point(6, 34);
+            this.texturePanel1.Name = "texturePanel1";
+            this.texturePanel1.Size = new System.Drawing.Size(227, 768);
+            this.texturePanel1.TabIndex = 1;
+            // 
             // ApplicationGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(1384, 881);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.heightPanel1);
             this.Controls.Add(this.workspace1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
@@ -377,6 +409,9 @@ namespace Level_Editor
         private System.Windows.Forms.ToolStripMenuItem directionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem heightToolStripMenuItem;
         private Workspace workspace1;
+        private HeightPanel heightPanel1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripMenuItem helpfulInfoToolStripMenuItem;
     }
 }
 

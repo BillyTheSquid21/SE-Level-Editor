@@ -172,6 +172,7 @@ namespace Level_Editor
                 permissions[i] = permissionsTemp;
             }
             EditorData.currentLevelPermissions = permissions;
+            EditorData.brushWorldHeight = EditorData.currentLevelWorldHeights[0]; //Ensures the brush defaults to a good value
         }
 
         public static void WriteCurrentLevelData()

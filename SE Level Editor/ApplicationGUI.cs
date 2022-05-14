@@ -15,6 +15,7 @@ namespace Level_Editor
             PopulateTreeView();
             this.treeView1.NodeMouseClick += new TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
             this.listView1.AllowColumnReorder = false;
+            this.heightPanel1.LinkWorkspace(this.workspace1);
         }
 
         private void PopulateTreeView()
@@ -140,7 +141,15 @@ namespace Level_Editor
                 }
                 if (EditorData.selectedListPath.Contains(".json") && EditorData.selectedListPath.Contains("level"))
                 {
+                    //Check if tileset loaded
+                    if (EditorData.currentTilesetImages == null)
+                    {
+                        LevelEditorCommands.ErrorMessage("No tileset loaded!");
+                        return;
+                    }
+                    this.heightPanel1.ClearButtons();
                     this.workspace1.LoadLevel(EditorData.selectedListPath);
+                    this.heightPanel1.AddHeight(EditorData.currentLevelWorldHeights);
                 }
             }
         }
