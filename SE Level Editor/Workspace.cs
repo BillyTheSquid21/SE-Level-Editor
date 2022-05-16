@@ -102,15 +102,15 @@ namespace Level_Editor
         }
         public Image RotateImageWithDirection(Image image, int direction)
         {
-            if (direction == 2 || direction == 7)
+            if (direction == 2 || direction == 7 || direction == 9)
             {
                 image.RotateFlip(RotateFlipType.Rotate90FlipNone);
             }
-            else if (direction == 5 || direction == 4)
+            else if (direction == 5 || direction == 4 || direction == 11)
             {
                 image.RotateFlip(RotateFlipType.Rotate180FlipNone);
             }
-            else if (direction == 6 || direction == 8)
+            else if (direction == 6 || direction == 8 || direction == 12)
             {
                 image.RotateFlip(RotateFlipType.Rotate270FlipNone);
             }

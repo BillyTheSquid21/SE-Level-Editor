@@ -35,9 +35,13 @@ namespace Level_Editor
             "East",
             "West",
             "North-East",
+            "North-East - Wrapped",
             "North-West",
+            "North-West - Wrapped",
             "South-East",
-            "South-West"});
+            "South-East - Wrapped",
+            "South-West",
+            "South-West - Wrapped"});
             this.comboBox1.Location = new System.Drawing.Point(13, 13);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
@@ -104,6 +108,22 @@ namespace Level_Editor
             else if (direction == "West")
             {
                 EditorData.brushDirection = 8;
+            }
+            else if (direction == "North-East - Wrapped")
+            {
+                EditorData.brushDirection = 9;
+            }
+            else if (direction == "North-West - Wrapped")
+            {
+                EditorData.brushDirection = 10;
+            }
+            else if (direction == "South-East - Wrapped")
+            {
+                EditorData.brushDirection = 11;
+            }
+            else if (direction == "South-West - Wrapped")
+            {
+                EditorData.brushDirection = 12;
             }
             this.Close();
         }
