@@ -122,8 +122,26 @@ namespace Level_Editor
             //Get data and store
             LevelSerialize.LoadLevelFromFile(path);
 
-            if (EditorData.currentLevelWidth > EditorData.currentTilesetImages.GetLength(0) 
-                || EditorData.currentLevelHeight > EditorData.currentTilesetImages.GetLength(1))
+            //Get max x and y texture size in loaded level to ensure that enough dimensions exist
+            uint maxTexX = 0; uint maxTexY = 0;
+            for (int y = 0; y < EditorData.currentLevelHeight; y++)
+            {
+                for (int x = 0; x < EditorData.currentLevelWidth; x++)
+                {
+                    Tile texTile = EditorData.currentLevelTextures[x, y];
+                    if (texTile.x > maxTexX)
+                    {
+                        maxTexX = texTile.x;
+                    }
+                    if (texTile.y > maxTexY)
+                    {
+                        maxTexY = texTile.y;
+                    }
+                }
+            }
+
+            if (maxTexX > EditorData.currentTilesetImages.GetLength(0) 
+                || maxTexY > EditorData.currentTilesetImages.GetLength(1))
             {
                 LevelEditorCommands.ErrorMessage("Loaded tileset does not have sufficient dimensions to represent level!");
                 return;
@@ -223,6 +241,10 @@ namespace Level_Editor
                     case BrushMode.DIRECTION:
                         DirectionSelect directionSelect = new DirectionSelect();
                         directionSelect.ShowDialog();
+                        break;
+                    case BrushMode.PERMISSION:
+                        PermissionSelect permSelect = new PermissionSelect();
+                        permSelect.ShowDialog();
                         break;
                     default:
                         break;

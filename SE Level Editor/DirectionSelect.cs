@@ -29,6 +29,7 @@ namespace Level_Editor
             // 
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
+            "Null",
             "North",
             "South",
             "East",
@@ -68,6 +69,10 @@ namespace Level_Editor
         {
             ComboBox box = (ComboBox)sender;
             string direction = box.GetItemText(box.SelectedItem);
+            if (direction == "Null")
+            {
+                EditorData.brushDirection = 0;
+            }
             if (direction == "North")
             {
                 EditorData.brushDirection = 1;
