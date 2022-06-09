@@ -58,21 +58,21 @@ namespace Level_Editor
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(13, 35);
+            this.button1.Location = new System.Drawing.Point(13, 40);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(120, 23);
+            this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 2;
             this.button1.Text = "Confirm";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // NumericSelect
+            // HeightSelect
             // 
-            this.ClientSize = new System.Drawing.Size(182, 70);
+            this.ClientSize = new System.Drawing.Size(182, 72);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.numericUpDown1);
-            this.Name = "NumericSelect";
+            this.Name = "HeightSelect";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
@@ -80,14 +80,14 @@ namespace Level_Editor
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         public int GetValue()
         {
             return (int)this.numericUpDown1.Value;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

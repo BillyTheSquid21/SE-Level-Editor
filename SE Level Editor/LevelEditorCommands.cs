@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Level_Editor
 {
@@ -64,13 +65,19 @@ namespace Level_Editor
 
         public static void CreateLevel(uint width, uint height, uint id, int originX, int originZ, int terrainHeight,string path)
         {
-            LevelSerialize.CreateLevel(width, height, id, originX, originZ, terrainHeight, path);
+            LevelSerialize.CreateLevelFile(width, height, id, originX, originZ, terrainHeight, path);
             LevelSerialize.CreateObjectFile(id, path);
+        }
+        public static void LoadLevel(string path)
+        {
+            LevelSerialize.LoadLevelFromFile(path);
+            LevelSerialize.LoadObjectsFromFile(path);
         }
 
         public static void WriteLevel()
         {
-            LevelSerialize.WriteCurrentLevelData();
+            Task.Factory.StartNew(() => LevelSerialize.WriteCurrentLevelData());
+            Task.Factory.StartNew(() => LevelSerialize.WriteCurrentObjectData());
         }
     }
 }

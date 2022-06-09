@@ -150,6 +150,7 @@ namespace Level_Editor
                     this.heightPanel1.ClearButtons();
                     this.workspace1.LoadLevel(EditorData.selectedListPath);
                     this.heightPanel1.AddHeight(EditorData.currentLevelWorldHeights);
+                    EditorData.brushMode = BrushMode.TEXTURE;
                 }
             }
         }

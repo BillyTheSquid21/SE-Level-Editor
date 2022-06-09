@@ -65,6 +65,13 @@
     <Compile Include="DirectionSelect.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Entity.cs" />
+    <Compile Include="EntityCreate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EntitySelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="HeightPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -75,6 +82,9 @@
     <Compile Include="EditorData.cs" />
     <Compile Include="LevelSerialize.cs" />
     <Compile Include="HeightSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NPCEditor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PermissionSelect.cs">
@@ -93,6 +103,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DirectionSelect.resx">
       <DependentUpon>DirectionSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EntityCreate.resx">
+      <DependentUpon>EntityCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EntitySelect.resx">
+      <DependentUpon>EntitySelect.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LevelCreationInterface.resx">
       <DependentUpon>LevelCreationInterface.cs</DependentUpon>

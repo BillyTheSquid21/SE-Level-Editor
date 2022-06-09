@@ -16,7 +16,7 @@ namespace Level_Editor
         public const string planeDirections = "planeDirectionsR";
         public const string planeTextures = "planeTexturesR";
         public const string planePermissions = "PlanePermissionsR";
-        public static void CreateLevel(uint width, uint height, uint id, int originX, int originZ, int terrainHeight, string path)
+        public static void CreateLevelFile(uint width, uint height, uint id, int originX, int originZ, int terrainHeight, string path)
         {
             dynamic level = new ExpandoObject();
 
@@ -96,7 +96,7 @@ namespace Level_Editor
         {
             EditorData.currentLevelPath = path;
 
-            //Get data
+            //Get level data
             dynamic levelData = JsonConvert.DeserializeObject<ExpandoObject>(File.ReadAllText(path), new ExpandoObjectConverter());
 
             //Load core data
@@ -111,6 +111,41 @@ namespace Level_Editor
             }
             EditorData.currentLevelWorldHeights = heights;
             StoreLevelContent(levelData);
+        }
+
+        public static void LoadObjectsFromFile(string path)
+        {
+            //Append path to be to current level xml
+            string objectsPath = path.Split('.')[0] + "_obj.xml";
+
+            //Load in the file
+            XmlDocument doc = new XmlDocument();
+            doc.Load(objectsPath);
+
+            //Get root
+            XmlElement root = doc.DocumentElement;
+
+            //Get next nodes
+            XmlNodeList nodes = root.ChildNodes;
+            foreach(XmlElement element in nodes)
+            {
+                if (element.Name == "Objects")
+                {
+                    StoreLevelObjects(element);
+                }
+            }
+
+        }
+
+        private static void StoreLevelObjects(XmlElement objects)
+        {
+            XmlNodeList objectsList = objects.ChildNodes;
+            foreach(XmlElement element in objectsList)
+            {
+                Entity npc = new Entity(EntityType.NPC, new Tile(), "");
+                Entity.CreateNPC(ref npc, element);
+                EditorData.currentLevelObjects.Add(npc);
+            }
         }
 
         private static void StoreLevelContent(dynamic levelData)
@@ -173,6 +208,40 @@ namespace Level_Editor
             }
             EditorData.currentLevelPermissions = permissions;
             EditorData.brushWorldHeight = EditorData.currentLevelWorldHeights[0]; //Ensures the brush defaults to a good value
+        }
+
+        public static void WriteCurrentObjectData()
+        {
+            //Decalre a new XMLDocument object
+            XmlDocument doc = new XmlDocument();
+            File.Delete(EditorData.currentLevelPath.Split('.')[0] + "_obj.xml");
+
+            //xml declaration is recommended, but not mandatory
+            XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
+
+            //create the root element
+            XmlElement root = doc.DocumentElement;
+            doc.InsertBefore(xmlDeclaration, root);
+
+            //string.Empty makes cleaner code
+            XmlElement element = doc.CreateElement(string.Empty, "Level", string.Empty);
+            doc.AppendChild(element);
+
+            XmlElement objects = doc.CreateElement(string.Empty, "Objects", string.Empty);
+            element.AppendChild(objects);
+            
+            //Write objects
+            foreach(Entity ent in EditorData.currentLevelObjects)
+            {
+                switch (ent.type)
+                {
+                    case EntityType.NPC:
+                        WriteNPC(ent, ref doc, ref objects);
+                        break;
+                }
+            }
+
+            doc.Save(EditorData.currentLevelPath.Split('.')[0] + "_obj.xml");
         }
 
         public static void WriteCurrentLevelData()
@@ -262,6 +331,64 @@ namespace Level_Editor
             {
                 writer.WriteLine(json);
             }
+        }
+
+        private static XmlElement WriteNPC(Entity ent, ref XmlDocument doc, ref XmlElement objects)
+        {
+            string objTag = "Level" + EditorData.currentLevelID + "_" + ent.tag;
+            XmlElement objectElement = doc.CreateElement(string.Empty, "Object", string.Empty);
+            objectElement.SetAttribute("name", objTag);
+
+            //Go through and add data
+            //Sprite type
+            XmlElement spriteType = doc.CreateElement(string.Empty, Entity.GetSpriteString((SpriteType)ent.properties[0]), string.Empty);
+
+            //Tile location
+            XmlElement tileX = doc.CreateElement(string.Empty, "TileX", string.Empty);
+            tileX.InnerText = ent.tile.x.ToString();
+            spriteType.AppendChild(tileX);
+            XmlElement tileZ = doc.CreateElement(string.Empty, "TileZ", string.Empty);
+            tileZ.InnerText = ((int)EditorData.currentLevelHeight - (int)ent.tile.y - 1).ToString(); //Offset to make compatible with engine
+            spriteType.AppendChild(tileZ);
+
+            //World level
+            XmlElement wLevel = doc.CreateElement(string.Empty, "WLevel", string.Empty);
+            wLevel.InnerText = ent.properties[1].ToString();
+            spriteType.AppendChild(wLevel);
+
+            //Texture location
+            XmlElement texX = doc.CreateElement(string.Empty, "TX", string.Empty);
+            texX.InnerText = ent.properties[2].ToString();
+            spriteType.AppendChild(texX);
+            XmlElement texY = doc.CreateElement(string.Empty, "TY", string.Empty);
+            texY.InnerText = ent.properties[3].ToString();
+            spriteType.AppendChild(texY);
+
+            //Facing dir
+            XmlElement dir = doc.CreateElement(string.Empty, "Dir", string.Empty);
+            dir.InnerText = ent.properties[4].ToString();
+            spriteType.AppendChild(dir);
+
+            //Random walk
+            XmlElement randW = doc.CreateElement(string.Empty, "RandWalk", string.Empty);
+            randW.InnerText = ent.properties[5].ToString();
+            spriteType.AppendChild(randW);
+
+            //Script
+            if (ent.properties.Count > 6)
+            {
+                if (ent.properties[6].ToString() != "NULL")
+                {
+                    XmlElement script = doc.CreateElement(string.Empty, "NPCScript", string.Empty);
+                    script.InnerText = ent.properties[6].ToString();
+                    spriteType.AppendChild(script);
+                }
+            }
+
+            //Append to node
+            objectElement.AppendChild(spriteType);
+            objects.AppendChild(objectElement);
+            return objectElement;
         }
     }
 }

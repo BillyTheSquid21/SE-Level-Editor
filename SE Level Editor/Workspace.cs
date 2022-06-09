@@ -100,6 +100,22 @@ namespace Level_Editor
                 }
             }
         }
+        //Gets box reference from tile - TODO - use a better search algorithm
+        private PictureBox GetButtonFromTile(Tile tile)
+        {
+            foreach(Control control in this.Controls)
+            {
+                PictureBox box = (PictureBox)control;
+                Tile boxTile = (Tile)box.Tag;
+                if (boxTile.x == tile.x && boxTile.y == tile.y)
+                {
+                    return box;
+                }
+            }
+            //Otherwise return first box and throw error msg
+            LevelEditorCommands.ErrorMessage("Tile is unrepresented, returning tile at index 0");
+            return (PictureBox)this.Controls[0];
+        }
         public Image RotateImageWithDirection(Image image, int direction)
         {
             if (direction == 2 || direction == 7 || direction == 9)
@@ -120,7 +136,7 @@ namespace Level_Editor
         {
             this.Controls.Clear();
             //Get data and store
-            LevelSerialize.LoadLevelFromFile(path);
+            LevelEditorCommands.LoadLevel(path);
 
             //Get max x and y texture size in loaded level to ensure that enough dimensions exist
             uint maxTexX = 0; uint maxTexY = 0;
@@ -147,6 +163,9 @@ namespace Level_Editor
                 return;
             }
 
+            //Get list of tiles with objects
+            Tile[] occupiedTiles = EditorData.GetNonEmptyTiles();
+
             //Create controls
             for (int y = 0; y < EditorData.currentLevelHeight; y++)
             {
@@ -172,10 +191,22 @@ namespace Level_Editor
                     }
 
                     Tile currentTile = new Tile();
-                    currentTile.x = (uint)x; currentTile.y = (uint)y;
+                    currentTile.x = (uint)x; currentTile.y = (uint)y; //Y is reversed for compatability with engine
                     pictureBox.Location = new Point(x*(int)Constants.TILE_SIZE, y*(int)Constants.TILE_SIZE);
                     pictureBox.MouseClick += new MouseEventHandler(tile_Click);
                     pictureBox.Tag = currentTile;
+
+                    //Check if contains an entity
+                    foreach(Tile tile in occupiedTiles)
+                    {
+                        if (currentTile.x == tile.x && currentTile.y == tile.y)
+                        {
+                            pictureBox.BackColor = Color.FromArgb(255, 100, 100);
+                            pictureBox.Padding = new System.Windows.Forms.Padding(1);
+                            break;
+                        }
+                    }
+
                     this.Controls.Add(pictureBox);
                 }
             }
@@ -187,6 +218,7 @@ namespace Level_Editor
             {
                 PictureBox boxInstance = (PictureBox)sender;
                 Tile currentTile;
+                Label label;
                 switch (EditorData.brushMode)
                 {
                     case BrushMode.TEXTURE:
@@ -202,8 +234,8 @@ namespace Level_Editor
                         currentTile = (Tile)boxInstance.Tag;
                         EditorData.currentLevelHeights[currentTile.x, currentTile.y] = EditorData.brushHeight;
                         //Shows change
-                        this.ClearTileOverlays();
-                        this.OverlayHeights(); //TODO - do more efficiently
+                        label = (Label)boxInstance.Controls[0];
+                        label.Text = "" + EditorData.brushHeight;
                         break;
                     case BrushMode.DIRECTION:
                         //Sets direction change in editor data
@@ -213,16 +245,16 @@ namespace Level_Editor
                         boxInstance.Image = (Image)EditorData.currentTilesetImages[texTile.x, texTile.y].Clone();
                         boxInstance.Image = RotateImageWithDirection(boxInstance.Image, EditorData.brushDirection);
                         //Shows change
-                        this.ClearTileOverlays();
-                        this.OverlayDirections(); //TODO - do more efficiently
+                        label = (Label)boxInstance.Controls[0];
+                        label.Text = "" + EditorData.brushDirection;
                         break;
                     case BrushMode.PERMISSION:
                         //Sets height change in editor data
                         currentTile = (Tile)boxInstance.Tag;
                         EditorData.currentLevelPermissions[EditorData.brushWorldHeight][currentTile.x, currentTile.y] = EditorData.brushPermission;
                         //Shows change
-                        this.ClearTileOverlays();
-                        this.OverlayPermissions(); //TODO - do more efficiently
+                        label = (Label)boxInstance.Controls[0];
+                        label.Text = "" + EditorData.brushPermission;
                         break;
                     default:
                         break;
@@ -233,6 +265,30 @@ namespace Level_Editor
             {
                 switch (EditorData.brushMode)
                 {
+                    case BrushMode.TEXTURE:
+                        Tile clickedTile = (Tile)((PictureBox)sender).Tag;
+                        EntitySelect entitySelect = new EntitySelect(clickedTile);
+                        entitySelect.ShowDialog();
+                        if (!entitySelect.createEnt)
+                        {
+                            return;
+                        }
+
+                        //Otherwise allow creation
+                        EntityCreate entityCreate = new EntityCreate();
+                        entityCreate.ShowDialog();
+                        if (entityCreate.enteredTag == "")
+                        {
+                            return;
+                        }
+                        Entity entity = new Entity(Entity.GetEntityType(entityCreate.selectedItem), clickedTile, entityCreate.enteredTag);
+                        Entity.CreateDefaultEntity(ref entity);
+                        EditorData.currentLevelObjects.Add(entity);
+                        Color col = Color.FromArgb(255, 100, 100);                        
+                        ((PictureBox)sender).BackColor = col;
+                        ((PictureBox)sender).Padding = new System.Windows.Forms.Padding(1);
+
+                        break;
                     case BrushMode.HEIGHT:
                         HeightSelect numericSelect = new HeightSelect();
                         numericSelect.ShowDialog();

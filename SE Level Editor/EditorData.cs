@@ -27,6 +27,61 @@ namespace Level_Editor
     //Stores data used in level editing between objects
     static class EditorData
     {
+        static EditorData()
+        {
+            currentLevelObjects = new List<Entity>();
+        }
+
+        public static int ObjectAt(Tile tile)
+        {
+            for(int i = 0; i < currentLevelObjects.Count; i++)
+            {
+                if (currentLevelObjects[i].tile.x == tile.x && currentLevelObjects[i].tile.y == tile.y)
+                {
+                    return i;
+                }
+            }
+            return -1; //if obj not found
+        }
+        public static Tile[] GetNonEmptyTiles()
+        {
+            Tile[] locations = new Tile[currentLevelObjects.Count];
+            for (int i = 0; i < currentLevelObjects.Count; i++)
+            {
+                locations[i] = currentLevelObjects[i].tile;
+            }
+            return locations;
+        }
+
+        public static Entity[] GetObjectsAt(Tile tile)
+        {
+            int size = ObjectCountAt(tile);
+            Entity[] entities = new Entity[size];
+            int index = 0;
+            foreach(Entity ent in currentLevelObjects)
+            {
+                if (ent.tile.x == tile.x && ent.tile.y == tile.y)
+                {
+                    entities[index] = ent;
+                    index++;
+                }
+            }
+            return entities;
+        }
+
+        public static int ObjectCountAt(Tile tile)
+        {
+            int count = 0;
+            foreach(Entity ent in currentLevelObjects)
+            {
+                if (ent.tile.x == tile.x && ent.tile.y == tile.y)
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+
         //Brush
         static public Tile brushTextureTile = new Tile();
         static public Image brushTextureImage = null;
@@ -51,6 +106,9 @@ namespace Level_Editor
 
         static public int[,] currentLevelHeights = null; static public int[,] currentLevelDirections = null;
         static public IDictionary<int, int[,]> currentLevelPermissions = null; static public Tile[,] currentLevelTextures = null;
+
+        //current level objects
+        static public List<Entity> currentLevelObjects;
 
         //Add new layer
         public static void AddHeightLayer(int height)
