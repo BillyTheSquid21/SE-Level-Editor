@@ -100,22 +100,26 @@ namespace Level_Editor
                 }
             }
         }
-        //Gets box reference from tile - TODO - use a better search algorithm
-        private PictureBox GetButtonFromTile(Tile tile)
+        public void OverlayEntities()
         {
-            foreach(Control control in this.Controls)
+            //Check if contains an entity
+            foreach (Tile tile in EditorData.GetNonEmptyTiles())
             {
-                PictureBox box = (PictureBox)control;
-                Tile boxTile = (Tile)box.Tag;
-                if (boxTile.x == tile.x && boxTile.y == tile.y)
-                {
-                    return box;
-                }
+                int index = (int)(tile.y * EditorData.currentLevelHeight) + (int)tile.x;
+                ((PictureBox)this.Controls[index]).BackColor = Color.FromArgb(255, 100, 100);
+                ((PictureBox)this.Controls[index]).Padding = new System.Windows.Forms.Padding(1);
             }
-            //Otherwise return first box and throw error msg
-            LevelEditorCommands.ErrorMessage("Tile is unrepresented, returning tile at index 0");
-            return (PictureBox)this.Controls[0];
         }
+
+        public void ClearEntities()
+        {
+            for (int i = 0; i < EditorData.currentLevelHeight*EditorData.currentLevelWidth; i++)
+            {
+                ((PictureBox)this.Controls[i]).BackColor = Color.FromArgb(255, 255, 255);
+                ((PictureBox)this.Controls[i]).Padding = new System.Windows.Forms.Padding(0);
+            }
+        }
+
         public Image RotateImageWithDirection(Image image, int direction)
         {
             if (direction == 2 || direction == 7 || direction == 9)
@@ -196,20 +200,10 @@ namespace Level_Editor
                     pictureBox.MouseClick += new MouseEventHandler(tile_Click);
                     pictureBox.Tag = currentTile;
 
-                    //Check if contains an entity
-                    foreach(Tile tile in occupiedTiles)
-                    {
-                        if (currentTile.x == tile.x && currentTile.y == tile.y)
-                        {
-                            pictureBox.BackColor = Color.FromArgb(255, 100, 100);
-                            pictureBox.Padding = new System.Windows.Forms.Padding(1);
-                            break;
-                        }
-                    }
-
                     this.Controls.Add(pictureBox);
                 }
             }
+            this.OverlayEntities();
         }
 
         private void tile_Click(object sender, MouseEventArgs e)
@@ -269,8 +263,24 @@ namespace Level_Editor
                         Tile clickedTile = (Tile)((PictureBox)sender).Tag;
                         EntitySelect entitySelect = new EntitySelect(clickedTile);
                         entitySelect.ShowDialog();
-                        if (!entitySelect.createEnt)
+                        //This works but is god awful I will clean it up
+                        if (entitySelect.cancel)
                         {
+                            return;
+                        }
+                        else if (!entitySelect.createEnt)
+                        {
+                            List<object> data = EditorData.currentLevelObjects[EditorData.GetObjectIndex(entitySelect.selectedEntity)].properties;
+                            NPCEditor npcEditor = new NPCEditor(entitySelect.selectedEntity, data);
+                            npcEditor.ShowDialog();
+
+                            //Check confirmed, then update object
+                            if (npcEditor.confirmed)
+                            {
+                                EditorData.currentLevelObjects[EditorData.GetObjectIndex(entitySelect.selectedEntity)].properties = npcEditor.data;
+                            }
+                            this.ClearEntities();
+                            this.OverlayEntities();
                             return;
                         }
 
@@ -287,7 +297,6 @@ namespace Level_Editor
                         Color col = Color.FromArgb(255, 100, 100);                        
                         ((PictureBox)sender).BackColor = col;
                         ((PictureBox)sender).Padding = new System.Windows.Forms.Padding(1);
-
                         break;
                     case BrushMode.HEIGHT:
                         HeightSelect numericSelect = new HeightSelect();

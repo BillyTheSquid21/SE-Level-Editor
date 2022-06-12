@@ -110,17 +110,8 @@ namespace Level_Editor
 
         private void TextureButton_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "PNG files (*.png*)|*.png*";
-            dialog.FilterIndex = 1;
-
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                string filePath = dialog.FileName;
-                tilesetLabel.Text = "Tileset 1";
-                texturePanel1.DisplayTileset(filePath);
-                return;
-            }
+            string path = LevelEditorCommands.OpenFileDialog("PNG files (*.png*)|*.png*");
+            this.texturePanel1.DisplayTileset(path);
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)

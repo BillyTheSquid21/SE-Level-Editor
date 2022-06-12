@@ -95,6 +95,7 @@
     <Compile Include="TexturePanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="TilesetLoad.cs" />
     <Compile Include="Workspace.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -115,6 +116,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="HeightSelect.resx">
       <DependentUpon>HeightSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NPCEditor.resx">
+      <DependentUpon>NPCEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PermissionSelect.resx">
       <DependentUpon>PermissionSelect.cs</DependentUpon>

@@ -41,6 +41,18 @@ namespace Level_Editor
             }
             return null;
         }
+        public static string OpenFileDialog(string filter)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = filter;
+            dialog.FilterIndex = 1;
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                return dialog.FileName;
+            }
+            return null;
+        }
 
         public static void ErrorMessage(string message)
         {

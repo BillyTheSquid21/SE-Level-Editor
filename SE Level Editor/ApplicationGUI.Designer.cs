@@ -47,6 +47,7 @@ namespace Level_Editor
             this.textureButton = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tilesetLabel = new System.Windows.Forms.Label();
+            this.texturePanel1 = new Level_Editor.TexturePanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -60,7 +61,6 @@ namespace Level_Editor
             this.helpfulInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.heightPanel1 = new Level_Editor.HeightPanel();
             this.workspace1 = new Level_Editor.Workspace();
-            this.texturePanel1 = new Level_Editor.TexturePanel();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -144,7 +144,7 @@ namespace Level_Editor
             this.directionToolStripMenuItem,
             this.heightToolStripMenuItem});
             this.setBrushModeToolStripMenuItem.Name = "setBrushModeToolStripMenuItem";
-            this.setBrushModeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.setBrushModeToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.setBrushModeToolStripMenuItem.Text = "Set brush mode";
             // 
             // textureToolStripMenuItem
@@ -206,6 +206,15 @@ namespace Level_Editor
             this.tilesetLabel.Size = new System.Drawing.Size(69, 13);
             this.tilesetLabel.TabIndex = 2;
             this.tilesetLabel.Text = "Tileset Name";
+            // 
+            // texturePanel1
+            // 
+            this.texturePanel1.AutoScroll = true;
+            this.texturePanel1.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.texturePanel1.Location = new System.Drawing.Point(6, 34);
+            this.texturePanel1.Name = "texturePanel1";
+            this.texturePanel1.Size = new System.Drawing.Size(227, 768);
+            this.texturePanel1.TabIndex = 1;
             // 
             // panel1
             // 
@@ -339,15 +348,6 @@ namespace Level_Editor
             this.workspace1.Name = "workspace1";
             this.workspace1.Size = new System.Drawing.Size(822, 664);
             this.workspace1.TabIndex = 4;
-            // 
-            // texturePanel1
-            // 
-            this.texturePanel1.AutoScroll = true;
-            this.texturePanel1.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.texturePanel1.Location = new System.Drawing.Point(6, 34);
-            this.texturePanel1.Name = "texturePanel1";
-            this.texturePanel1.Size = new System.Drawing.Size(227, 768);
-            this.texturePanel1.TabIndex = 1;
             // 
             // ApplicationGUI
             // 

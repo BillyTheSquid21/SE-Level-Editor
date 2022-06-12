@@ -17,12 +17,6 @@ namespace Level_Editor
     //Panel that displays a grid of availible tiles
     class TexturePanel : Panel
     {
-        public const string FuncDLL = @"LoadingFuncs.dll";
-        [DllImport(FuncDLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void LoadTileset(string path, [In, Out][MarshalAs(UnmanagedType.LPArray)] byte[] data, int size, ref ImageData dim);
-        [DllImport(FuncDLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void LoadTile([In, Out][MarshalAs(UnmanagedType.LPArray)] byte[] tilesetData, int tilesetSize, ref ImageData dim, [In, Out][MarshalAs(UnmanagedType.LPArray)] byte[] iconData, int iconSize, Tile tile);
-
         public TexturePanel() : base()
         {
             this.AutoScroll = true;
@@ -51,7 +45,7 @@ namespace Level_Editor
             const byte BITS_PER_PIXEL = 4;
             byte[] bytes = new byte[(int)(width*height*BITS_PER_PIXEL)];
             ImageData data = new ImageData();
-            LoadTilesetFromFile(path, ref bytes, bytes.Length, ref data);
+            TilesetLoad.LoadTilesetFromFile(path, ref bytes, bytes.Length, ref data);
 
             //Works out how many tiles there are
             uint tilesX = (uint)data.width / Constants.TILE_SIZE;
@@ -80,7 +74,7 @@ namespace Level_Editor
                 Tile tile = new Tile();
                 tile.x = currentTileX; tile.y = currentTileY;
                 byte[] iconBytes = new byte[(int)(DISPLAY_TILE_SIZE * DISPLAY_TILE_SIZE * BITS_PER_PIXEL)];
-                ExtractTileFromImage(ref bytes, bytes.Length, ref data, ref iconBytes, iconBytes.Length, tile);
+                TilesetLoad.ExtractTileFromImage(ref bytes, bytes.Length, ref data, ref iconBytes, iconBytes.Length, tile);
                 using (var stream = new MemoryStream(iconBytes))
                 using (var bmp = new Bitmap(DISPLAY_TILE_SIZE, DISPLAY_TILE_SIZE, pixelFormat))
                 {
@@ -122,27 +116,6 @@ namespace Level_Editor
                 }
             }
             EditorData.currentTilesetImages = tileImages;
-        }
-
-        public unsafe void LoadTilesetFromFile(string path, ref byte[] data, int size, ref ImageData info)
-        {
-            //Pin Memory
-            fixed (byte* p = data)
-            {
-                LoadTileset(path, data, size, ref info);
-            }
-        }
-
-        public unsafe void ExtractTileFromImage(ref byte[] tilesetData, int tilesetSize, ref ImageData info, ref byte[] iconData, int tileSize, Tile tile)
-        {
-            //Pin Memory
-            fixed (byte* p1 = tilesetData)
-            {
-                fixed(byte* p2 = iconData)
-                {
-                    LoadTile(tilesetData, tilesetSize, ref info, iconData, tileSize, tile);
-                }
-            }
         }
 
         private void Select_Click(object sender, EventArgs e)

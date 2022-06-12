@@ -32,11 +32,23 @@ namespace Level_Editor
             currentLevelObjects = new List<Entity>();
         }
 
-        public static int ObjectAt(Tile tile)
+        public static int GetObjectIndex(Tile tile)
         {
             for(int i = 0; i < currentLevelObjects.Count; i++)
             {
                 if (currentLevelObjects[i].tile.x == tile.x && currentLevelObjects[i].tile.y == tile.y)
+                {
+                    return i;
+                }
+            }
+            return -1; //if obj not found
+        }
+
+        public static int GetObjectIndex(string name)
+        {
+            for (int i = 0; i < currentLevelObjects.Count; i++)
+            {
+                if (name == currentLevelObjects[i].tag)
                 {
                     return i;
                 }

@@ -54,7 +54,7 @@ namespace Level_Editor
         {
             //Set sprite type
             entity.properties.Add(SpriteType.DirectionalSprite);
-            //Set world level
+            //Set height
             entity.properties.Add(0);
             //Set texture location
             entity.properties.Add(0); //X Tex
@@ -70,7 +70,7 @@ namespace Level_Editor
         public static void CreateNPC(ref Entity entity, XmlElement element)
         {
             entity.tag = element.Attributes[0].Value.Split('_')[1];
-            entity.properties.Add(Entity.GetSpriteFromString(element.FirstChild.Name));
+            entity.properties.Add(Entity.GetSprite(element.FirstChild.Name));
 
             XmlNodeList properties = element.FirstChild.ChildNodes;
 
@@ -132,13 +132,19 @@ namespace Level_Editor
                     break;
                 }
             }
+            bool hasScript = false;
             foreach (XmlElement property in properties)
             {
                 if (property.Name == "NPCScript")
                 {
                     entity.properties.Add(property.InnerText);
+                    hasScript = true;
                     break;
                 }
+            }
+            if (!hasScript)
+            {
+                entity.properties.Add("NULL");
             }
             entity.tile = tile;
         }
@@ -164,7 +170,7 @@ namespace Level_Editor
             return EntityType.NULL;
         }
 
-        public static string GetSpriteString(SpriteType type)
+        public static string GetSprite(SpriteType type)
         {
             switch (type)
             {
@@ -180,7 +186,7 @@ namespace Level_Editor
             return "Sprite";
         }
 
-        public static SpriteType GetSpriteFromString(string type)
+        public static SpriteType GetSprite(string type)
         {
             if (type == "Sprite")
             {
@@ -199,6 +205,98 @@ namespace Level_Editor
                 return SpriteType.RunningSprite;
             }
             return SpriteType.Sprite;
+        }
+
+        public static int GetDirection(string direction)
+        {
+            if (direction == "Null")
+            {
+                return 0;
+            }
+            if (direction == "North")
+            {
+                return 1;
+            }
+            else if (direction == "North-East")
+            {
+                return 2;
+            }
+            else if (direction == "North-West")
+            {
+                return 3;
+            }
+            else if (direction == "South")
+            {
+                return 4;
+            }
+            else if (direction == "South-East")
+            {
+                return 5;
+            }
+            else if (direction == "South-West")
+            {
+                return 6;
+            }
+            else if (direction == "East")
+            {
+                return 7;
+            }
+            else if (direction == "West")
+            {
+                return 8;
+            }
+            else if (direction == "North-East - Wrapped")
+            {
+                return 9;
+            }
+            else if (direction == "North-West - Wrapped")
+            {
+                return 10;
+            }
+            else if (direction == "South-East - Wrapped")
+            {
+                return 11;
+            }
+            else if (direction == "South-West - Wrapped")
+            {
+                return 12;
+            }
+            return 0;
+        }
+
+        public static string GetDirection(int direction)
+        {
+            switch (direction)
+            {
+                case 0:
+                    return "Null";
+                case 1:
+                    return "North";
+                case 2:
+                    return "North-East";
+                case 3:
+                    return "North-West";
+                case 4:
+                    return "South";
+                case 5:
+                    return "South-East";
+                case 6:
+                    return "South-West";
+                case 7:
+                    return "East";
+                case 8:   
+                    return "West";
+                case 9:
+                    return "North-East - Wrapped";
+                case 10:
+                    return "North-West - Wrapped";
+                case 11:
+                    return "South-East - Wrapped";
+                case 12:
+                    return "South-West - Wrapped";
+                default:
+                    return "Null";
+            }
         }
     }
 }

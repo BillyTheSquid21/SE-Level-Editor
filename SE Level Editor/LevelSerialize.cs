@@ -341,7 +341,7 @@ namespace Level_Editor
 
             //Go through and add data
             //Sprite type
-            XmlElement spriteType = doc.CreateElement(string.Empty, Entity.GetSpriteString((SpriteType)ent.properties[0]), string.Empty);
+            XmlElement spriteType = doc.CreateElement(string.Empty, Entity.GetSprite((SpriteType)ent.properties[0]), string.Empty);
 
             //Tile location
             XmlElement tileX = doc.CreateElement(string.Empty, "TileX", string.Empty);

@@ -73,58 +73,7 @@ namespace Level_Editor
         {
             ComboBox box = (ComboBox)sender;
             string direction = box.GetItemText(box.SelectedItem);
-            if (direction == "Null")
-            {
-                EditorData.brushDirection = 0;
-            }
-            if (direction == "North")
-            {
-                EditorData.brushDirection = 1;
-            }
-            else if (direction == "North-East")
-            {
-                EditorData.brushDirection = 2;
-            }
-            else if (direction == "North-West")
-            {
-                EditorData.brushDirection = 3;
-            }
-            else if (direction == "South")
-            {
-                EditorData.brushDirection = 4;
-            }
-            else if (direction == "South-East")
-            {
-                EditorData.brushDirection = 5;
-            }
-            else if (direction == "South-West")
-            {
-                EditorData.brushDirection = 6;
-            }
-            else if (direction == "East")
-            {
-                EditorData.brushDirection = 7;
-            }
-            else if (direction == "West")
-            {
-                EditorData.brushDirection = 8;
-            }
-            else if (direction == "North-East - Wrapped")
-            {
-                EditorData.brushDirection = 9;
-            }
-            else if (direction == "North-West - Wrapped")
-            {
-                EditorData.brushDirection = 10;
-            }
-            else if (direction == "South-East - Wrapped")
-            {
-                EditorData.brushDirection = 11;
-            }
-            else if (direction == "South-West - Wrapped")
-            {
-                EditorData.brushDirection = 12;
-            }
+            EditorData.brushDirection = Entity.GetDirection(direction);
             this.Close();
         }
     }
