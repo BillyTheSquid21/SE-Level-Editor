@@ -34,7 +34,7 @@ extern "C" {
 		for (int i = 0; i < size; i+=4)
 		{
 			//Reverses channels - writes as bgr otherwise
-			data[i]		= tmp[i + 2];
+			data[i]	= tmp[i + 2];
 			data[i + 1] = tmp[i + 1];
 			data[i + 2] = tmp[i];
 
