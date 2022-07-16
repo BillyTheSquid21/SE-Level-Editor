@@ -30,6 +30,7 @@ namespace Level_Editor
         static EditorData()
         {
             currentLevelObjects = new List<Entity>();
+            currentLevelBatchEntities = new List<BatchEntity>();
         }
 
         public static int GetObjectIndex(Tile tile)
@@ -121,6 +122,7 @@ namespace Level_Editor
 
         //current level objects
         static public List<Entity> currentLevelObjects;
+        static public List<BatchEntity> currentLevelBatchEntities;
 
         //Add new layer
         public static void AddHeightLayer(int height)

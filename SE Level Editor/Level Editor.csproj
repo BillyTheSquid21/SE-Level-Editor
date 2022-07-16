@@ -61,6 +61,7 @@
     <Compile Include="ApplicationGUI.Designer.cs">
       <DependentUpon>ApplicationGUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="BatchEntity.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DirectionSelect.cs">
       <SubType>Form</SubType>
@@ -71,6 +72,9 @@
     </Compile>
     <Compile Include="EntitySelect.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GridControl.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="HeightPanel.cs">
       <SubType>Component</SubType>
@@ -96,6 +100,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="TilesetLoad.cs" />
+    <Compile Include="VegetationCreate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Workspace.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -132,6 +139,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="VegetationCreate.resx">
+      <DependentUpon>VegetationCreate.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

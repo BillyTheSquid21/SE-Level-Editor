@@ -210,6 +210,74 @@ namespace Level_Editor
             EditorData.brushWorldHeight = EditorData.currentLevelWorldHeights[0]; //Ensures the brush defaults to a good value
         }
 
+        private static void WriteCurrentGrassData(ref XmlDocument doc, ref XmlElement root)
+        {
+            bool present = false;
+            BatchEntity entity = EditorData.currentLevelBatchEntities[0];
+            for(int i = 0; i < EditorData.currentLevelBatchEntities.Count; i++)
+            {
+                entity = EditorData.currentLevelBatchEntities[i];
+                if (entity.type == BatchEntityType.Grasses)
+                {
+                    present = true;
+                    break;
+                }
+            }
+            if (!present)
+            {
+                return;
+            }
+
+            XmlElement grass = doc.CreateElement(string.Empty, "TallGrass", string.Empty);
+            grass.SetAttribute("name", entity.tag);
+            root.AppendChild(grass);
+
+            //Add head info
+            int count = (int)entity.properties[0];
+            Tile frame1 = (Tile)entity.properties[1];
+            Tile frame2 = (Tile)entity.properties[2];
+            Tile frame3 = (Tile)entity.properties[3];
+
+            XmlElement countElement = doc.CreateElement(string.Empty, "Count", string.Empty);
+            countElement.InnerText = count.ToString();
+            grass.AppendChild(countElement);
+
+            XmlElement txFrame1 = doc.CreateElement(string.Empty, "TXFrame1", string.Empty);
+            txFrame1.InnerText = frame1.x.ToString();
+            grass.AppendChild(txFrame1);
+            XmlElement tyFrame1 = doc.CreateElement(string.Empty, "TYFrame1", string.Empty);
+            tyFrame1.InnerText = frame1.y.ToString();
+            grass.AppendChild(tyFrame1);
+
+            XmlElement txFrame2 = doc.CreateElement(string.Empty, "TXFrame2", string.Empty);
+            txFrame2.InnerText = frame2.x.ToString();
+            grass.AppendChild(txFrame2);
+            XmlElement tyFrame2 = doc.CreateElement(string.Empty, "TYFrame2", string.Empty);
+            tyFrame2.InnerText = frame2.y.ToString();
+            grass.AppendChild(tyFrame2);
+
+            XmlElement txFrame3 = doc.CreateElement(string.Empty, "TXFrame3", string.Empty);
+            txFrame3.InnerText = frame3.x.ToString();
+            grass.AppendChild(txFrame3);
+            XmlElement tyFrame3 = doc.CreateElement(string.Empty, "TYFrame3", string.Empty);
+            tyFrame3.InnerText = frame3.y.ToString();
+            grass.AppendChild(tyFrame3);
+
+            //Add each grass instance
+            foreach(object grassInstance in entity.instances)
+            {
+                XmlElement grassElement = doc.CreateElement(string.Empty, "Grass", string.Empty);
+                XmlElement tileX = doc.CreateElement(string.Empty, "TileX", string.Empty);
+                XmlElement tileZ = doc.CreateElement(string.Empty, "TileZ", string.Empty);
+                XmlElement wLevel = doc.CreateElement(string.Empty, "WLevel", string.Empty);
+                grassElement.AppendChild(tileX); grassElement.AppendChild(tileZ); grassElement.AppendChild(wLevel);
+                tileX.InnerText = ((Grass)grassInstance).tile.x.ToString();
+                tileZ.InnerText = ((int)EditorData.currentLevelHeight - ((Grass)grassInstance).tile.y - 1).ToString();
+                wLevel.InnerText = ((Grass)grassInstance).height.ToString();
+                grass.AppendChild(grassElement);
+            }
+        }
+
         public static void WriteCurrentObjectData()
         {
             //Decalre a new XMLDocument object
@@ -226,6 +294,9 @@ namespace Level_Editor
             //string.Empty makes cleaner code
             XmlElement element = doc.CreateElement(string.Empty, "Level", string.Empty);
             doc.AppendChild(element);
+
+            //If any grass, write to xml
+            WriteCurrentGrassData(ref doc, ref element);
 
             XmlElement objects = doc.CreateElement(string.Empty, "Objects", string.Empty);
             element.AppendChild(objects);

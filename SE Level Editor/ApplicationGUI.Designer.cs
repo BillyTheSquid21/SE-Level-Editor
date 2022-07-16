@@ -37,6 +37,8 @@ namespace Level_Editor
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fullscreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.levelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.objectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.manageVegetationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.writeCurrentLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setBrushModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -116,10 +118,26 @@ namespace Level_Editor
             // levelToolStripMenuItem
             // 
             this.levelToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.objectsToolStripMenuItem,
             this.writeCurrentLevelToolStripMenuItem});
             this.levelToolStripMenuItem.Name = "levelToolStripMenuItem";
             this.levelToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.levelToolStripMenuItem.Text = "Level";
+            // 
+            // objectsToolStripMenuItem
+            // 
+            this.objectsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.manageVegetationToolStripMenuItem});
+            this.objectsToolStripMenuItem.Name = "objectsToolStripMenuItem";
+            this.objectsToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.objectsToolStripMenuItem.Text = "Objects";
+            // 
+            // manageVegetationToolStripMenuItem
+            // 
+            this.manageVegetationToolStripMenuItem.Name = "manageVegetationToolStripMenuItem";
+            this.manageVegetationToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.manageVegetationToolStripMenuItem.Text = "Manage Vegetation";
+            this.manageVegetationToolStripMenuItem.Click += new System.EventHandler(this.manageVegetationToolStripMenuItem_Click);
             // 
             // writeCurrentLevelToolStripMenuItem
             // 
@@ -412,6 +430,8 @@ namespace Level_Editor
         private HeightPanel heightPanel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem helpfulInfoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem objectsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem manageVegetationToolStripMenuItem;
     }
 }
 

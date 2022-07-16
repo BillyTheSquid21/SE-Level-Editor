@@ -139,7 +139,8 @@ namespace Level_Editor
                         return;
                     }
                     this.heightPanel1.ClearButtons();
-                    this.workspace1.LoadLevel(EditorData.selectedListPath);
+                    LevelEditorCommands.LoadLevel(EditorData.selectedListPath);
+                    this.workspace1.LoadLevel();
                     this.heightPanel1.AddHeight(EditorData.currentLevelWorldHeights);
                     EditorData.brushMode = BrushMode.TEXTURE;
                 }
@@ -228,6 +229,17 @@ namespace Level_Editor
         private void heightToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.workspace1.SetBrushMode(BrushMode.HEIGHT);
+        }
+
+        private void manageVegetationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (EditorData.currentLevelID == -1)
+            {
+                LevelEditorCommands.ErrorMessage("Level not loaded!");
+                return;
+            }
+            VegetationCreate vegetationCreate = new VegetationCreate();
+            vegetationCreate.Show();
         }
     }
 }

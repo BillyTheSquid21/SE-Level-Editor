@@ -1,11 +1,6 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using System.Drawing;
 using System.Collections.Generic;
-using System.IO;
-using Newtonsoft.Json;
-using System.Dynamic;
-using Newtonsoft.Json.Converters;
 
 namespace Level_Editor
 {
@@ -136,11 +131,9 @@ namespace Level_Editor
             }
             return image;
         }
-        public void LoadLevel(string path)
+        public void LoadLevel()
         {
             this.Controls.Clear();
-            //Get data and store
-            LevelEditorCommands.LoadLevel(path);
 
             //Get max x and y texture size in loaded level to ensure that enough dimensions exist
             uint maxTexX = 0; uint maxTexY = 0;
