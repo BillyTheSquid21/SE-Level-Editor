@@ -72,6 +72,27 @@ namespace Level_Editor
                 writer.WriteLine(json);
             }
         }
+        public static void CreateGlobalsFile(string path)
+        {
+            //Decalre a new XMLDocument object
+            XmlDocument doc = new XmlDocument();
+
+            //xml declaration is recommended, but not mandatory
+            XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
+
+            //create the root element
+            XmlElement root = doc.DocumentElement;
+            doc.InsertBefore(xmlDeclaration, root);
+
+            //string.Empty makes cleaner code
+            XmlElement element = doc.CreateElement(string.Empty, "Level", string.Empty);
+            doc.AppendChild(element);
+
+            XmlElement objectElement = doc.CreateElement(string.Empty, "Objects", string.Empty);
+            element.AppendChild(objectElement);
+
+            doc.Save(path + "//global.xml");
+        }
 
         public static void CreateObjectFile(uint id, string path)
         {
@@ -96,6 +117,14 @@ namespace Level_Editor
         {
             EditorData.currentLevelPath = path;
 
+            //Check if are in a different project to previous global
+            string objectsPath = Path.GetDirectoryName(path) + "//global.xml";
+            if (objectsPath != EditorData.globalPath)
+            {
+                EditorData.globalPath = null;
+                EditorData.currentLevelGlobalEntities = null;
+            }
+
             //Get level data
             dynamic levelData = JsonConvert.DeserializeObject<ExpandoObject>(File.ReadAllText(path), new ExpandoObjectConverter());
 
@@ -111,6 +140,32 @@ namespace Level_Editor
             }
             EditorData.currentLevelWorldHeights = heights;
             StoreLevelContent(levelData);
+        }
+
+        public static void LoadGlobalObjectsFromFile(string path)
+        {
+            string objectsPath = Path.GetDirectoryName(path) + "//global.xml";
+            EditorData.globalPath = objectsPath;
+            EditorData.currentLevelGlobalEntities = new List<BatchEntity>();
+
+            //Load in
+            XmlDocument doc = new XmlDocument();
+            doc.Load(objectsPath);
+
+            //Get root
+            XmlElement root = doc.DocumentElement;
+
+            //Get next node
+            XmlElement objects = (XmlElement)root.FirstChild;
+
+            //Get next nodes
+            foreach (XmlElement element in objects.ChildNodes)
+            {
+                if (element.Name == "LoadingZones")
+                {
+                    StoreLoadingZones(element);
+                }
+            }
         }
 
         public static void LoadObjectsFromFile(string path)
@@ -137,15 +192,110 @@ namespace Level_Editor
                 {
                     StoreLevelGrass(element);
                 }
+                else if (element.Name == "Trees")
+                {
+                    StoreLevelTrees(element);
+                }
             }
+        }
 
+        private static void StoreLoadingZones(XmlElement loadingZone)
+        {
+            BatchEntity loadingZoneEntity = new BatchEntity(BatchEntityType.LoadingZone, "LoadingZones");
+            foreach (XmlElement element in loadingZone.ChildNodes)
+            {
+                LoadingZone zone = new LoadingZone();
+                foreach(XmlElement property in element.ChildNodes)
+                {
+                    if (property.Name == "X")
+                    {
+                        zone.xOff = Int32.Parse(property.InnerText);
+                    }
+                    else if (property.Name == "Z")
+                    {
+                        zone.zOff = Int32.Parse(property.InnerText);
+                    }
+                    else if (property.Name == "Width")
+                    {
+                        zone.width = UInt32.Parse(property.InnerText);
+                    }
+                    else if (property.Name == "Height")
+                    {
+                        zone.height = UInt32.Parse(property.InnerText);
+                    }
+                    else if (property.Name == "L1ID")
+                    {
+                        zone.level1ID = Int32.Parse(property.InnerText);
+                    }
+                    else if (property.Name == "L2ID")
+                    {
+                        zone.level2ID = Int32.Parse(property.InnerText);
+                    }
+                }
+                loadingZoneEntity.instances.Add(zone);
+            }
+            EditorData.currentLevelGlobalEntities.Add(loadingZoneEntity);
+        }
+
+        private static void StoreLevelTrees(XmlElement trees)
+        {
+            XmlNodeList treeList = trees.ChildNodes;
+            BatchEntity treeEntity = new BatchEntity(BatchEntityType.Trees, trees.GetAttribute("name"));
+            foreach(XmlElement element in treeList)
+            {
+                if (element.Name == "Count")
+                {
+                    treeEntity.properties.Add(Int32.Parse(element.InnerText));
+                }
+                else if (element.Name == "Tree")
+                {
+                    Tree treeInstance = new Tree();
+                    foreach (XmlElement treeElement in element.ChildNodes)
+                    {
+                        if (treeElement.Name == "TileX")
+                        {
+                            treeInstance.tile.x = UInt32.Parse(treeElement.InnerText);
+                        }
+                        else if (treeElement.Name == "TileZ")
+                        {
+                            treeInstance.tile.y = (uint)InvertZTile(Int32.Parse(treeElement.InnerText));
+                        }
+                        else if (treeElement.Name == "TX1")
+                        {
+                            treeInstance.firstHalfTexture.x = UInt32.Parse(treeElement.InnerText);
+                        }
+                        else if (treeElement.Name == "TY1")
+                        {
+                            treeInstance.firstHalfTexture.y = UInt32.Parse(treeElement.InnerText);
+                        }
+                        else if (treeElement.Name == "TX2")
+                        {
+                            treeInstance.secondHalfTexture.x = UInt32.Parse(treeElement.InnerText);
+                        }
+                        else if (treeElement.Name == "TY2")
+                        {
+                            treeInstance.secondHalfTexture.y = UInt32.Parse(treeElement.InnerText);
+                        }
+                        else if (treeElement.Name == "TW")
+                        {
+                            treeInstance.textureWidth = UInt32.Parse(treeElement.InnerText);
+                        }
+                        else if (treeElement.Name == "TH")
+                        {
+                            treeInstance.textureWidth = UInt32.Parse(treeElement.InnerText);
+                        }
+                    }
+                    treeEntity.instances.Add(treeInstance);
+                }
+            }
+            EditorData.currentLevelBatchEntities.Add(treeEntity);
         }
 
         private static void StoreLevelGrass(XmlElement grass)
         {
             XmlNodeList grassList = grass.ChildNodes;
             BatchEntity grassEntity = new BatchEntity(BatchEntityType.Grasses, grass.GetAttribute("name"));
-            grassEntity.properties = new List<object>(new object[4]);
+            grassEntity.properties = new List<object>(new object[4]); //Ensures placing at indexes
 
             Tile frame1 = new Tile();
             Tile frame2 = new Tile();
@@ -193,7 +343,7 @@ namespace Level_Editor
                         else if (grassElement.Name == "TileZ")
                         {
                             grassInstance.tile.y = UInt32.Parse(grassElement.InnerText);
-                            grassInstance.tile.y = (uint)InvertZTile(grassInstance.tile.y);
+                            grassInstance.tile.y = (uint)InvertZTile((int)grassInstance.tile.y);
                         }
                         else if (grassElement.Name == "WLevel")
                         {
@@ -283,9 +433,79 @@ namespace Level_Editor
             EditorData.brushWorldHeight = EditorData.currentLevelWorldHeights[0]; //Ensures the brush defaults to a good value
         }
 
+        private static void WriteCurrentTreeData(ref XmlDocument doc, ref XmlElement root)
+        {
+            bool present = false;
+            if (EditorData.currentLevelBatchEntities.Count == 0)
+            {
+                return;
+            }
+            BatchEntity entity = EditorData.currentLevelBatchEntities[0];
+            for (int i = 0; i < EditorData.currentLevelBatchEntities.Count; i++)
+            {
+                entity = EditorData.currentLevelBatchEntities[i];
+                if (entity.type == BatchEntityType.Trees)
+                {
+                    present = true;
+                    break;
+                }
+            }
+            if (!present || (int)entity.properties[0] <= 0)
+            {
+                return;
+            }
+
+            XmlElement trees = doc.CreateElement(string.Empty, "Trees", string.Empty);
+            trees.SetAttribute("name", entity.tag);
+            root.AppendChild(trees);
+
+            //Add head info
+            int count = (int)entity.properties[0];
+            XmlElement countElement = doc.CreateElement(string.Empty, "Count", string.Empty);
+            countElement.InnerText = count.ToString();
+            trees.AppendChild(countElement);
+
+            //Add each tree
+            //Add each grass instance
+            foreach (object treeInstance in entity.instances)
+            {
+                XmlElement treeElement = doc.CreateElement(string.Empty, "Tree", string.Empty);
+                XmlElement tileX = doc.CreateElement(string.Empty, "TileX", string.Empty);
+                XmlElement tileZ = doc.CreateElement(string.Empty, "TileZ", string.Empty);
+                XmlElement wLevel = doc.CreateElement(string.Empty, "WLevel", string.Empty);
+                treeElement.AppendChild(tileX); treeElement.AppendChild(tileZ); treeElement.AppendChild(wLevel);
+                tileX.InnerText = ((Tree)treeInstance).tile.x.ToString();
+                tileZ.InnerText = (InvertZTile((int)((Tree)treeInstance).tile.y)).ToString();
+                wLevel.InnerText = ((Tree)treeInstance).height.ToString();
+
+                //Texture
+                XmlElement tx1 = doc.CreateElement(string.Empty, "TX1", string.Empty);
+                tx1.InnerText = ((Tree)treeInstance).firstHalfTexture.x.ToString();
+                XmlElement ty1 = doc.CreateElement(string.Empty, "TY1", string.Empty);
+                ty1.InnerText = ((Tree)treeInstance).firstHalfTexture.y.ToString();
+                XmlElement tx2 = doc.CreateElement(string.Empty, "TX2", string.Empty);
+                tx2.InnerText = ((Tree)treeInstance).secondHalfTexture.x.ToString();
+                XmlElement ty2 = doc.CreateElement(string.Empty, "TY2", string.Empty);
+                ty2.InnerText = ((Tree)treeInstance).secondHalfTexture.y.ToString();
+                XmlElement tw = doc.CreateElement(string.Empty, "TW", string.Empty);
+                tw.InnerText = ((Tree)treeInstance).textureWidth.ToString();
+                XmlElement th = doc.CreateElement(string.Empty, "TH", string.Empty);
+                th.InnerText = ((Tree)treeInstance).textureHeight.ToString();
+                treeElement.AppendChild(tx1); treeElement.AppendChild(ty1); 
+                treeElement.AppendChild(tx2); treeElement.AppendChild(ty2);
+                treeElement.AppendChild(tw); treeElement.AppendChild(th);
+
+                trees.AppendChild(treeElement);
+            }
+        }
+
         private static void WriteCurrentGrassData(ref XmlDocument doc, ref XmlElement root)
         {
             bool present = false;
+            if (EditorData.currentLevelBatchEntities.Count == 0)
+            {
+                return;
+            }
             BatchEntity entity = EditorData.currentLevelBatchEntities[0];
             for(int i = 0; i < EditorData.currentLevelBatchEntities.Count; i++)
             {
@@ -296,7 +516,7 @@ namespace Level_Editor
                     break;
                 }
             }
-            if (!present)
+            if (!present || (int)entity.properties[0] <= 0)
             {
                 return;
             }
@@ -345,7 +565,7 @@ namespace Level_Editor
                 XmlElement wLevel = doc.CreateElement(string.Empty, "WLevel", string.Empty);
                 grassElement.AppendChild(tileX); grassElement.AppendChild(tileZ); grassElement.AppendChild(wLevel);
                 tileX.InnerText = ((Grass)grassInstance).tile.x.ToString();
-                tileZ.InnerText = (InvertZTile(((Grass)grassInstance).tile.y)).ToString();
+                tileZ.InnerText = (InvertZTile((int)((Grass)grassInstance).tile.y)).ToString();
                 wLevel.InnerText = ((Grass)grassInstance).height.ToString();
                 grass.AppendChild(grassElement);
             }
@@ -371,6 +591,9 @@ namespace Level_Editor
             //If any grass, write to xml
             WriteCurrentGrassData(ref doc, ref element);
 
+            //If any trees, write to xml
+            WriteCurrentTreeData(ref doc, ref element);
+
             XmlElement objects = doc.CreateElement(string.Empty, "Objects", string.Empty);
             element.AppendChild(objects);
             
@@ -386,6 +609,75 @@ namespace Level_Editor
             }
 
             doc.Save(EditorData.currentLevelPath.Split('.')[0] + "_obj.xml");
+        }
+
+        public static void WriteCurrentGlobalData()
+        {
+            //Decalre a new XMLDocument object
+            if (EditorData.globalPath == null)
+            {
+                LevelEditorCommands.ErrorMessage("No globals loaded!");
+                return;
+            }
+            XmlDocument doc = new XmlDocument();
+            File.Delete(EditorData.globalPath);
+
+            //xml declaration is recommended, but not mandatory
+            XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
+
+            //create the root element
+            XmlElement root = doc.DocumentElement;
+            doc.InsertBefore(xmlDeclaration, root);
+
+            //string.Empty makes cleaner code
+            XmlElement element = doc.CreateElement(string.Empty, "Level", string.Empty);
+            doc.AppendChild(element);
+
+            XmlElement objElement = doc.CreateElement(string.Empty, "Objects", string.Empty);
+            element.AppendChild(objElement);
+
+            foreach (BatchEntity entity in EditorData.currentLevelGlobalEntities)
+            {
+                switch (entity.type)
+                {
+                    case BatchEntityType.LoadingZone:
+                        WriteLoadingZones(entity, ref doc, ref objElement);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            doc.Save(EditorData.globalPath);
+        }
+
+        private static void WriteLoadingZones(BatchEntity ent, ref XmlDocument doc, ref XmlElement objElement)
+        {
+            XmlElement loadingZone = doc.CreateElement(string.Empty, "LoadingZones", string.Empty);
+            objElement.AppendChild(loadingZone);
+            loadingZone.SetAttribute("name", "LoadingZones");
+
+            LoadingZone zone;
+            foreach (object obj in ent.instances)
+            {
+                XmlElement zoneElement = doc.CreateElement(string.Empty, "Zone", string.Empty);
+                loadingZone.AppendChild(zoneElement);
+
+                zone = (LoadingZone)obj;
+
+                //Create element for each section
+                XmlElement x = doc.CreateElement(string.Empty, "X", string.Empty);
+                XmlElement z = doc.CreateElement(string.Empty, "Z", string.Empty);
+                XmlElement w = doc.CreateElement(string.Empty, "Width", string.Empty);
+                XmlElement h = doc.CreateElement(string.Empty, "Height", string.Empty);
+                XmlElement id1 = doc.CreateElement(string.Empty, "L1ID", string.Empty);
+                XmlElement id2 = doc.CreateElement(string.Empty, "L2ID", string.Empty);
+                x.InnerText = zone.xOff.ToString(); z.InnerText = zone.zOff.ToString();
+                w.InnerText = zone.width.ToString(); h.InnerText = zone.height.ToString();
+                id1.InnerText = zone.level1ID.ToString(); id2.InnerText = zone.level2ID.ToString();
+                zoneElement.AppendChild(x); zoneElement.AppendChild(z);
+                zoneElement.AppendChild(w); zoneElement.AppendChild(h);
+                zoneElement.AppendChild(id1); zoneElement.AppendChild(id2);
+            }
         }
 
         public static void WriteCurrentLevelData()
@@ -492,7 +784,7 @@ namespace Level_Editor
             tileX.InnerText = ent.tile.x.ToString();
             spriteType.AppendChild(tileX);
             XmlElement tileZ = doc.CreateElement(string.Empty, "TileZ", string.Empty);
-            tileZ.InnerText = (InvertZTile(ent.tile.y).ToString()); //Offset to make compatible with engine
+            tileZ.InnerText = (InvertZTile((int)ent.tile.y).ToString()); //Offset to make compatible with engine
             spriteType.AppendChild(tileZ);
 
             //World level
@@ -535,9 +827,9 @@ namespace Level_Editor
             return objectElement;
         }
 
-        public static uint InvertZTile(uint originalZ)
+        public static int InvertZTile(int originalZ)
         {
-            return EditorData.currentLevelHeight - originalZ - 1;
+            return (int)EditorData.currentLevelHeight - originalZ - 1;
         }
     }
 }

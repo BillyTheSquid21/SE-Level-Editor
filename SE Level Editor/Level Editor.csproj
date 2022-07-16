@@ -88,6 +88,9 @@
     <Compile Include="HeightSelect.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="LoadingZoneCreate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="NPCEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +126,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="HeightSelect.resx">
       <DependentUpon>HeightSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoadingZoneCreate.resx">
+      <DependentUpon>LoadingZoneCreate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NPCEditor.resx">
       <DependentUpon>NPCEditor.cs</DependentUpon>

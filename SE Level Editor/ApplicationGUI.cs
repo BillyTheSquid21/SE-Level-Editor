@@ -140,6 +140,11 @@ namespace Level_Editor
                     }
                     this.heightPanel1.ClearButtons();
                     LevelEditorCommands.LoadLevel(EditorData.selectedListPath);
+                    this.label9.Text = EditorData.currentLevelID.ToString();
+                    this.label10.Text = EditorData.currentLevelWidth.ToString();
+                    this.label11.Text = EditorData.currentLevelHeight.ToString();
+                    this.label12.Text = EditorData.currentLevelOriginX.ToString();
+                    this.label13.Text = EditorData.currentLevelOriginZ.ToString();
                     this.workspace1.LoadLevel();
                     this.heightPanel1.AddHeight(EditorData.currentLevelWorldHeights);
                     EditorData.brushMode = BrushMode.TEXTURE;
@@ -240,6 +245,12 @@ namespace Level_Editor
             }
             VegetationCreate vegetationCreate = new VegetationCreate();
             vegetationCreate.Show();
+        }
+
+        private void addLoadingZoneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadingZoneCreate loadingZoneCreate = new LoadingZoneCreate();
+            loadingZoneCreate.Show();
         }
     }
 }

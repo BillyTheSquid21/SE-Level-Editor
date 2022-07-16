@@ -314,9 +314,10 @@ namespace Level_Editor
             this.gridControl1.AutoScroll = true;
             this.gridControl1.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.gridControl1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.gridControl1.Location = new System.Drawing.Point(427, 41);
+            this.gridControl1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.gridControl1.Location = new System.Drawing.Point(426, 0);
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(420, 484);
+            this.gridControl1.Size = new System.Drawing.Size(622, 566);
             this.gridControl1.TabIndex = 5;
             // 
             // label10
@@ -361,7 +362,7 @@ namespace Level_Editor
             // 
             // VegetationCreate
             // 
-            this.ClientSize = new System.Drawing.Size(859, 566);
+            this.ClientSize = new System.Drawing.Size(1048, 566);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.numericUpDown8);
             this.Controls.Add(this.checkBox1);

@@ -8,7 +8,7 @@ namespace Level_Editor
 {
     public enum BatchEntityType
     { 
-        NULL, Trees, Grasses
+        NULL, Trees, Grasses, LoadingZone
     }
 
     //Grass instance struct
@@ -29,6 +29,17 @@ namespace Level_Editor
         public Tile secondHalfTexture;
         public uint textureWidth;
         public uint textureHeight;
+    }
+
+    //Loading zone instance struct
+    struct LoadingZone
+    {
+        public int xOff;
+        public int zOff;
+        public uint width;
+        public uint height;
+        public int level1ID;
+        public int level2ID;
     }
 
     //Entities that are batched together (eg grass instances, tree instances etc)
@@ -57,7 +68,17 @@ namespace Level_Editor
                 case BatchEntityType.Trees:
                     CreateDefaultTree(ref entity);
                     break;
+                case BatchEntityType.LoadingZone:
+                    CreateDefaultLoadingZone(ref entity);
+                    break;
             }
+        }
+
+        //Loading zone
+        private static void CreateDefaultLoadingZone(ref BatchEntity entity)
+        {
+            //Set tag
+            entity.tag = "LoadingZones";
         }
 
         //Grass

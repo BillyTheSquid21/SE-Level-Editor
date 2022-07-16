@@ -39,6 +39,8 @@ namespace Level_Editor
             this.levelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.objectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manageVegetationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.globalsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addLoadingZoneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.writeCurrentLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setBrushModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,8 +51,19 @@ namespace Level_Editor
             this.textureButton = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tilesetLabel = new System.Windows.Forms.Label();
-            this.texturePanel1 = new Level_Editor.TexturePanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -63,9 +76,11 @@ namespace Level_Editor
             this.helpfulInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.heightPanel1 = new Level_Editor.HeightPanel();
             this.workspace1 = new Level_Editor.Workspace();
+            this.texturePanel1 = new Level_Editor.TexturePanel();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -119,6 +134,7 @@ namespace Level_Editor
             // 
             this.levelToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.objectsToolStripMenuItem,
+            this.globalsToolStripMenuItem,
             this.writeCurrentLevelToolStripMenuItem});
             this.levelToolStripMenuItem.Name = "levelToolStripMenuItem";
             this.levelToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
@@ -129,7 +145,7 @@ namespace Level_Editor
             this.objectsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.manageVegetationToolStripMenuItem});
             this.objectsToolStripMenuItem.Name = "objectsToolStripMenuItem";
-            this.objectsToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.objectsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.objectsToolStripMenuItem.Text = "Objects";
             // 
             // manageVegetationToolStripMenuItem
@@ -139,10 +155,25 @@ namespace Level_Editor
             this.manageVegetationToolStripMenuItem.Text = "Manage Vegetation";
             this.manageVegetationToolStripMenuItem.Click += new System.EventHandler(this.manageVegetationToolStripMenuItem_Click);
             // 
+            // globalsToolStripMenuItem
+            // 
+            this.globalsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addLoadingZoneToolStripMenuItem});
+            this.globalsToolStripMenuItem.Name = "globalsToolStripMenuItem";
+            this.globalsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.globalsToolStripMenuItem.Text = "Globals";
+            // 
+            // addLoadingZoneToolStripMenuItem
+            // 
+            this.addLoadingZoneToolStripMenuItem.Name = "addLoadingZoneToolStripMenuItem";
+            this.addLoadingZoneToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addLoadingZoneToolStripMenuItem.Text = "Add Loading Zone";
+            this.addLoadingZoneToolStripMenuItem.Click += new System.EventHandler(this.addLoadingZoneToolStripMenuItem_Click);
+            // 
             // writeCurrentLevelToolStripMenuItem
             // 
             this.writeCurrentLevelToolStripMenuItem.Name = "writeCurrentLevelToolStripMenuItem";
-            this.writeCurrentLevelToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.writeCurrentLevelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.writeCurrentLevelToolStripMenuItem.Text = "Write Current Level";
             this.writeCurrentLevelToolStripMenuItem.Click += new System.EventHandler(this.writeCurrentLevelToolStripMenuItem_Click);
             // 
@@ -225,19 +256,11 @@ namespace Level_Editor
             this.tilesetLabel.TabIndex = 2;
             this.tilesetLabel.Text = "Tileset Name";
             // 
-            // texturePanel1
-            // 
-            this.texturePanel1.AutoScroll = true;
-            this.texturePanel1.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.texturePanel1.Location = new System.Drawing.Point(6, 34);
-            this.texturePanel1.Name = "texturePanel1";
-            this.texturePanel1.Size = new System.Drawing.Size(227, 768);
-            this.texturePanel1.TabIndex = 1;
-            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.splitContainer1);
@@ -246,6 +269,126 @@ namespace Level_Editor
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(326, 857);
             this.panel1.TabIndex = 3;
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.SystemColors.Control;
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel3.Controls.Add(this.label13);
+            this.panel3.Controls.Add(this.label12);
+            this.panel3.Controls.Add(this.label11);
+            this.panel3.Controls.Add(this.label10);
+            this.panel3.Controls.Add(this.label9);
+            this.panel3.Controls.Add(this.label7);
+            this.panel3.Controls.Add(this.label6);
+            this.panel3.Controls.Add(this.label5);
+            this.panel3.Controls.Add(this.label4);
+            this.panel3.Controls.Add(this.label3);
+            this.panel3.Controls.Add(this.label2);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel3.Location = new System.Drawing.Point(0, 534);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(322, 319);
+            this.panel3.TabIndex = 3;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(104, 123);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(13, 13);
+            this.label13.TabIndex = 11;
+            this.label13.Text = "0";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(104, 99);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(13, 13);
+            this.label12.TabIndex = 10;
+            this.label12.Text = "0";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(104, 77);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(13, 13);
+            this.label11.TabIndex = 9;
+            this.label11.Text = "0";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(104, 55);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(13, 13);
+            this.label10.TabIndex = 8;
+            this.label10.Text = "0";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(104, 33);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(27, 13);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "N/A";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(3, 123);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(48, 13);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "Offset Y:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 99);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(48, 13);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "Offset X:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 77);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 13);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "Height:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 55);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(38, 13);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "Width:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 33);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(21, 13);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "ID:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 10);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(94, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Current Level Info:";
             // 
             // button2
             // 
@@ -367,11 +510,20 @@ namespace Level_Editor
             this.workspace1.Size = new System.Drawing.Size(822, 664);
             this.workspace1.TabIndex = 4;
             // 
+            // texturePanel1
+            // 
+            this.texturePanel1.AutoScroll = true;
+            this.texturePanel1.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.texturePanel1.Location = new System.Drawing.Point(6, 34);
+            this.texturePanel1.Name = "texturePanel1";
+            this.texturePanel1.Size = new System.Drawing.Size(227, 768);
+            this.texturePanel1.TabIndex = 1;
+            // 
             // ApplicationGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Window;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1384, 881);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.heightPanel1);
@@ -389,6 +541,8 @@ namespace Level_Editor
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -432,6 +586,20 @@ namespace Level_Editor
         private System.Windows.Forms.ToolStripMenuItem helpfulInfoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem objectsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem manageVegetationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem globalsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addLoadingZoneToolStripMenuItem;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
     }
 }
 

@@ -123,6 +123,7 @@ namespace Level_Editor
         //current level objects
         static public List<Entity> currentLevelObjects;
         static public List<BatchEntity> currentLevelBatchEntities;
+        static public List<BatchEntity> currentLevelGlobalEntities = null; static public string globalPath = null;
 
         //Add new layer
         public static void AddHeightLayer(int height)

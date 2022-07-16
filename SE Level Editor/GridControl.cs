@@ -81,7 +81,15 @@ namespace Level_Editor
 
         public int GetPictureBoxIndex(Tile tile)
         {
-            int index = (int)((tile.y * height) + tile.x);
+            int index = -1;
+            foreach(Control control in this.Controls)
+            {
+                if (((Tile)control.Tag).x == tile.x && ((Tile)control.Tag).y == tile.y)
+                {
+                    return index;
+                }
+                index++;
+            }
             return index;
         }
 
