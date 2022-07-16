@@ -88,7 +88,7 @@ namespace Level_Editor
             {
                 if (property.Name == "TileZ")
                 {
-                    tile.y = (uint)(EditorData.currentLevelHeight - Int32.Parse(property.InnerText) - 1); //Offset to make compatible with engine
+                    tile.y = LevelSerialize.InvertZTile(UInt32.Parse(property.InnerText)); //Offset to make compatible with engine
                     break;
                 }
             }

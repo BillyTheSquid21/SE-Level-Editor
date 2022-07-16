@@ -529,6 +529,10 @@ namespace Level_Editor
 
         private void numericUpDown2_ValueChanged(object sender, EventArgs e)
         {
+            if (this.properties == null)
+            {
+                return;
+            }
             this.LoadGrassIcon();
             Tile tile = (Tile)this.properties[(int)this.numericUpDown1.Value];
             tile.x = (uint)this.numericUpDown2.Value;
@@ -537,6 +541,10 @@ namespace Level_Editor
 
         private void numericUpDown3_ValueChanged(object sender, EventArgs e)
         {
+            if (this.properties == null)
+            {
+                return;
+            }
             this.LoadGrassIcon();
             Tile tile = (Tile)this.properties[(int)this.numericUpDown1.Value];
             tile.y = (uint)this.numericUpDown3.Value;
@@ -557,6 +565,10 @@ namespace Level_Editor
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
+            if (this.properties == null)
+            {
+                return;
+            }
             Tile tile = (Tile)this.properties[(int)this.numericUpDown1.Value];
             this.numericUpDown2.Value = tile.x;
             this.numericUpDown3.Value = tile.y;

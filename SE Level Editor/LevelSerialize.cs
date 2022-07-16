@@ -133,8 +133,81 @@ namespace Level_Editor
                 {
                     StoreLevelObjects(element);
                 }
+                else if (element.Name == "TallGrass")
+                {
+                    StoreLevelGrass(element);
+                }
             }
 
+        }
+
+        private static void StoreLevelGrass(XmlElement grass)
+        {
+            XmlNodeList grassList = grass.ChildNodes;
+            BatchEntity grassEntity = new BatchEntity(BatchEntityType.Grasses, grass.GetAttribute("name"));
+            grassEntity.properties = new List<object>(new object[4]);
+
+            Tile frame1 = new Tile();
+            Tile frame2 = new Tile();
+            Tile frame3 = new Tile();
+
+            foreach(XmlElement element in grassList)
+            {
+                if (element.Name == "Count")
+                {
+                    grassEntity.properties[0] = Int32.Parse(element.InnerText);
+                }
+                else if (element.Name == "TXFrame1")
+                {
+                    frame1.x = UInt32.Parse(element.InnerText);
+                }
+                else if (element.Name == "TYFrame1")
+                {
+                    frame1.y = UInt32.Parse(element.InnerText);
+                }
+                else if (element.Name == "TXFrame2")
+                {
+                    frame2.x = UInt32.Parse(element.InnerText);
+                }
+                else if (element.Name == "TYFrame2")
+                {
+                    frame2.y = UInt32.Parse(element.InnerText);
+                }
+                else if (element.Name == "TXFrame3")
+                {
+                    frame3.x = UInt32.Parse(element.InnerText);
+                }
+                else if (element.Name == "TYFrame3")
+                {
+                    frame3.y = UInt32.Parse(element.InnerText);
+                }
+                else if (element.Name == "Grass")
+                {
+                    Grass grassInstance = new Grass();
+                    foreach(XmlElement grassElement in element.ChildNodes)
+                    {
+                        if (grassElement.Name == "TileX")
+                        {
+                            grassInstance.tile.x = UInt32.Parse(grassElement.InnerText);
+                        }
+                        else if (grassElement.Name == "TileZ")
+                        {
+                            grassInstance.tile.y = UInt32.Parse(grassElement.InnerText);
+                            grassInstance.tile.y = (uint)InvertZTile(grassInstance.tile.y);
+                        }
+                        else if (grassElement.Name == "WLevel")
+                        {
+                            grassInstance.height = Int32.Parse(grassElement.InnerText);
+                        }
+                    }
+                    grassEntity.instances.Add(grassInstance);
+                }
+            }
+            grassEntity.properties[1] = frame1;
+            grassEntity.properties[2] = frame2;
+            grassEntity.properties[3] = frame3;
+
+            EditorData.currentLevelBatchEntities.Add(grassEntity);
         }
 
         private static void StoreLevelObjects(XmlElement objects)
@@ -272,7 +345,7 @@ namespace Level_Editor
                 XmlElement wLevel = doc.CreateElement(string.Empty, "WLevel", string.Empty);
                 grassElement.AppendChild(tileX); grassElement.AppendChild(tileZ); grassElement.AppendChild(wLevel);
                 tileX.InnerText = ((Grass)grassInstance).tile.x.ToString();
-                tileZ.InnerText = ((int)EditorData.currentLevelHeight - ((Grass)grassInstance).tile.y - 1).ToString();
+                tileZ.InnerText = (InvertZTile(((Grass)grassInstance).tile.y)).ToString();
                 wLevel.InnerText = ((Grass)grassInstance).height.ToString();
                 grass.AppendChild(grassElement);
             }
@@ -419,7 +492,7 @@ namespace Level_Editor
             tileX.InnerText = ent.tile.x.ToString();
             spriteType.AppendChild(tileX);
             XmlElement tileZ = doc.CreateElement(string.Empty, "TileZ", string.Empty);
-            tileZ.InnerText = ((int)EditorData.currentLevelHeight - (int)ent.tile.y - 1).ToString(); //Offset to make compatible with engine
+            tileZ.InnerText = (InvertZTile(ent.tile.y).ToString()); //Offset to make compatible with engine
             spriteType.AppendChild(tileZ);
 
             //World level
@@ -460,6 +533,11 @@ namespace Level_Editor
             objectElement.AppendChild(spriteType);
             objects.AppendChild(objectElement);
             return objectElement;
+        }
+
+        public static uint InvertZTile(uint originalZ)
+        {
+            return EditorData.currentLevelHeight - originalZ - 1;
         }
     }
 }
