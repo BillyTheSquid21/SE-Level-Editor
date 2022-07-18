@@ -109,6 +109,8 @@ namespace Level_Editor
 
         //Tileset
         static public Image[,] currentTilesetImages = null;
+        static public string tilesetPath = null;
+        static public uint tilesetImageWidth; static public uint tilesetImageHeight;
 
         //current level data
         static public string currentLevelPath = null;

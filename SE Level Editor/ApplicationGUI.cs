@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading;
 using Microsoft.VisualBasic;
 
 namespace Level_Editor
@@ -111,6 +112,7 @@ namespace Level_Editor
         private void TextureButton_Click(object sender, EventArgs e)
         {
             string path = LevelEditorCommands.OpenFileDialog("PNG files (*.png*)|*.png*");
+            EditorData.tilesetPath = path;
             this.texturePanel1.DisplayTileset(path);
         }
 
@@ -251,6 +253,19 @@ namespace Level_Editor
         {
             LoadingZoneCreate loadingZoneCreate = new LoadingZoneCreate();
             loadingZoneCreate.Show();
+        }
+
+        private void dViewerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var numThreads = 20;
+            var toProcess = numThreads;
+
+            var resetEvent = new ManualResetEvent(false);
+            ThreadPool.QueueUserWorkItem(
+                new WaitCallback(delegate (object state) {
+                    ModelWindow.RunWindow();
+                    if (Interlocked.Decrement(ref toProcess) == 0) resetEvent.Set();
+                }), null);
         }
     }
 }

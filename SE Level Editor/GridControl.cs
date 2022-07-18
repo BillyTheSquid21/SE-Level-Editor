@@ -84,11 +84,11 @@ namespace Level_Editor
             int index = -1;
             foreach(Control control in this.Controls)
             {
+                index++;
                 if (((Tile)control.Tag).x == tile.x && ((Tile)control.Tag).y == tile.y)
                 {
                     return index;
                 }
-                index++;
             }
             return index;
         }

@@ -48,9 +48,11 @@ namespace Level_Editor
             this.permissionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.directionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.heightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textureButton = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tilesetLabel = new System.Windows.Forms.Label();
+            this.texturePanel1 = new Level_Editor.TexturePanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label13 = new System.Windows.Forms.Label();
@@ -76,7 +78,6 @@ namespace Level_Editor
             this.helpfulInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.heightPanel1 = new Level_Editor.HeightPanel();
             this.workspace1 = new Level_Editor.Workspace();
-            this.texturePanel1 = new Level_Editor.TexturePanel();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -145,7 +146,7 @@ namespace Level_Editor
             this.objectsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.manageVegetationToolStripMenuItem});
             this.objectsToolStripMenuItem.Name = "objectsToolStripMenuItem";
-            this.objectsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.objectsToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.objectsToolStripMenuItem.Text = "Objects";
             // 
             // manageVegetationToolStripMenuItem
@@ -160,27 +161,28 @@ namespace Level_Editor
             this.globalsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addLoadingZoneToolStripMenuItem});
             this.globalsToolStripMenuItem.Name = "globalsToolStripMenuItem";
-            this.globalsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.globalsToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.globalsToolStripMenuItem.Text = "Globals";
             // 
             // addLoadingZoneToolStripMenuItem
             // 
             this.addLoadingZoneToolStripMenuItem.Name = "addLoadingZoneToolStripMenuItem";
-            this.addLoadingZoneToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.addLoadingZoneToolStripMenuItem.Text = "Add Loading Zone";
+            this.addLoadingZoneToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addLoadingZoneToolStripMenuItem.Text = "Loading Zones";
             this.addLoadingZoneToolStripMenuItem.Click += new System.EventHandler(this.addLoadingZoneToolStripMenuItem_Click);
             // 
             // writeCurrentLevelToolStripMenuItem
             // 
             this.writeCurrentLevelToolStripMenuItem.Name = "writeCurrentLevelToolStripMenuItem";
-            this.writeCurrentLevelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.writeCurrentLevelToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.writeCurrentLevelToolStripMenuItem.Text = "Write Current Level";
             this.writeCurrentLevelToolStripMenuItem.Click += new System.EventHandler(this.writeCurrentLevelToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.setBrushModeToolStripMenuItem});
+            this.setBrushModeToolStripMenuItem,
+            this.dViewerToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -193,7 +195,7 @@ namespace Level_Editor
             this.directionToolStripMenuItem,
             this.heightToolStripMenuItem});
             this.setBrushModeToolStripMenuItem.Name = "setBrushModeToolStripMenuItem";
-            this.setBrushModeToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.setBrushModeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.setBrushModeToolStripMenuItem.Text = "Set brush mode";
             // 
             // textureToolStripMenuItem
@@ -223,6 +225,13 @@ namespace Level_Editor
             this.heightToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.heightToolStripMenuItem.Text = "Height";
             this.heightToolStripMenuItem.Click += new System.EventHandler(this.heightToolStripMenuItem_Click);
+            // 
+            // dViewerToolStripMenuItem
+            // 
+            this.dViewerToolStripMenuItem.Name = "dViewerToolStripMenuItem";
+            this.dViewerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.dViewerToolStripMenuItem.Text = "3D Viewer";
+            this.dViewerToolStripMenuItem.Click += new System.EventHandler(this.dViewerToolStripMenuItem_Click);
             // 
             // textureButton
             // 
@@ -255,6 +264,15 @@ namespace Level_Editor
             this.tilesetLabel.Size = new System.Drawing.Size(69, 13);
             this.tilesetLabel.TabIndex = 2;
             this.tilesetLabel.Text = "Tileset Name";
+            // 
+            // texturePanel1
+            // 
+            this.texturePanel1.AutoScroll = true;
+            this.texturePanel1.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.texturePanel1.Location = new System.Drawing.Point(6, 34);
+            this.texturePanel1.Name = "texturePanel1";
+            this.texturePanel1.Size = new System.Drawing.Size(227, 768);
+            this.texturePanel1.TabIndex = 1;
             // 
             // panel1
             // 
@@ -510,15 +528,6 @@ namespace Level_Editor
             this.workspace1.Size = new System.Drawing.Size(822, 664);
             this.workspace1.TabIndex = 4;
             // 
-            // texturePanel1
-            // 
-            this.texturePanel1.AutoScroll = true;
-            this.texturePanel1.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.texturePanel1.Location = new System.Drawing.Point(6, 34);
-            this.texturePanel1.Name = "texturePanel1";
-            this.texturePanel1.Size = new System.Drawing.Size(227, 768);
-            this.texturePanel1.TabIndex = 1;
-            // 
             // ApplicationGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -600,6 +609,7 @@ namespace Level_Editor
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ToolStripMenuItem dViewerToolStripMenuItem;
     }
 }
 

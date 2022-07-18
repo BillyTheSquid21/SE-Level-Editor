@@ -42,8 +42,20 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="OpenTK, Version=3.3.2.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.3.3.2\lib\net20\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <HintPath>C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\3.1.0\ref\netcoreapp3.1\PresentationCore.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <HintPath>C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\3.1.0\ref\netcoreapp3.1\PresentationFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml">
+      <HintPath>C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\3.1.0\ref\netcoreapp3.1\System.Xaml.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,8 +65,22 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider">
+      <HintPath>C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\3.1.0\ref\netcoreapp3.1\UIAutomationProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <HintPath>C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\3.1.0\ref\netcoreapp3.1\WindowsBase.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsFormsIntegration">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\WindowsFormsIntegration.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ARenderable.cs" />
+    <Compile Include="ColoredRenderObject.cs" />
+    <Compile Include="ModelEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ApplicationGUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,14 +117,18 @@
     <Compile Include="LoadingZoneCreate.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ModelWindow.cs" />
     <Compile Include="NPCEditor.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ObjectFactory.cs" />
     <Compile Include="PermissionSelect.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shader.cs" />
+    <Compile Include="TexturedRenderObject.cs" />
     <Compile Include="TexturePanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -106,6 +136,7 @@
     <Compile Include="VegetationCreate.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Vertex.cs" />
     <Compile Include="Workspace.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -130,6 +161,9 @@
     <EmbeddedResource Include="LoadingZoneCreate.resx">
       <DependentUpon>LoadingZoneCreate.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ModelEditor.resx">
+      <DependentUpon>ModelEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="NPCEditor.resx">
       <DependentUpon>NPCEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -148,6 +182,7 @@
     <EmbeddedResource Include="VegetationCreate.resx">
       <DependentUpon>VegetationCreate.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

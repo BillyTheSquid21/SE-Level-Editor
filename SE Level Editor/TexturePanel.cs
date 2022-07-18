@@ -46,6 +46,7 @@ namespace Level_Editor
             byte[] bytes = new byte[(int)(width*height*BITS_PER_PIXEL)];
             ImageData data = new ImageData();
             TilesetLoad.LoadTilesetFromFile(path, ref bytes, bytes.Length, ref data);
+            EditorData.tilesetImageWidth = (uint)data.width; EditorData.tilesetImageHeight = (uint)data.height;
 
             //Works out how many tiles there are
             uint tilesX = (uint)data.width / Constants.TILE_SIZE;
